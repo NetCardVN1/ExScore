@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExScore - Lịch bóng đá trực tiếp</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --green-dark: #0a3d1f;
+    --green-mid:  #0f6b34;
+    --green-light:#1abc5e;
+    --gold:       #f0c042;
+    --gold-dark:  #c8971d;
+    --white:      #f5f7f2;
+    --gray-1:     #e8ede3;
+    --gray-2:     #b8c5b0;
+    --gray-3:     #6b7d63;
+    --text-dark:  #0d1f0a;
+    --red:        #e63946;
+    --blue:       #1d6fa4;
+    --shadow:     0 4px 20px rgba(0,0,0,.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--text-dark);
+    color: var(--white);
+    min-height: 100vh;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #0a3d1f 0%, #0f6b34 55%, #1abc5e 100%);
+    padding: 56px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '⚽';
+    position: absolute;
+    font-size: 280px;
+    opacity: .05;
+    top: -40px; right: -40px;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: 'Oswald', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.6rem);
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0,0,0,.4);
+  }
+  .hero h1 span { color: var(--gold); }
+  .hero p {
+    margin-top: 12px;
+    color: rgba(255,255,255,.75);
+    font-size: 1rem;
+    letter-spacing: .5px;
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: #081a0f;
+    border-bottom: 3px solid var(--green-mid);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-btn {
+    font-family: 'Oswald', sans-serif;
+    font-size: .95rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 16px 22px;
+    background: transparent;
+    color: var(--gray-2);
+    border: none;
+    cursor: pointer;
+    transition: all .25s;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -3px;
+  }
+  .tab-btn:hover { color: var(--white); }
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+    background: rgba(240,192,66,.06);
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; padding: 32px 16px 64px; max-width: 1100px; margin: 0 auto; }
+  .panel.active { display: block; }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-icon {
+    width: 48px; height: 48px;
+    background: var(--green-mid);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(26,188,94,.25);
+  }
+  .section-header h2 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .section-header p { color: var(--gray-2); font-size: .85rem; margin-top: 2px; }
+
+  /* ── INFO CARDS ── */
+  .info-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin-bottom: 32px;
+  }
+  .info-card {
+    background: rgba(15,107,52,.2);
+    border: 1px solid rgba(26,188,94,.2);
+    border-radius: 10px;
+    padding: 18px 20px;
+    text-align: center;
+  }
+  .info-card .val {
+    font-family: 'Oswald', sans-serif;
+    font-size: 2rem;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .info-card .lbl {
+    font-size: .78rem;
+    color: var(--gray-2);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+
+  /* ── GROUP GRID ── */
+  .groups-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
+    margin-bottom: 36px;
+  }
+  .group-card {
+    background: #0d2617;
+    border: 1px solid rgba(26,188,94,.18);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .group-card-header {
+    background: var(--green-mid);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .group-label {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .group-badge {
+    font-size: .72rem;
+    background: rgba(255,255,255,.18);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: .3px;
+  }
+  .group-card-body { padding: 12px 16px; }
+  .team-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    font-size: .88rem;
+  }
+  .team-row:last-child { border-bottom: none; }
+  .flag { font-size: 1.2rem; }
+  .team-name { flex: 1; color: var(--white); font-weight: 500; }
+  .team-name.host {
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .tag {
+    font-size: .68rem;
+    padding: 2px 7px;
+    border-radius: 12px;
+    font-weight: 600;
+    letter-spacing: .3px;
+  }
+  .tag.host-tag { background: var(--gold); color: #000; }
+  .tag.death-tag { background: var(--red); color: #fff; }
+
+  /* ── SCHEDULE TABLE ── */
+  .schedule-section { margin-bottom: 40px; }
+  .schedule-section h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 10px 0 8px;
+    border-bottom: 2px solid rgba(240,192,66,.3);
+    margin-bottom: 16px;
+  }
+
+  .match-list { display: flex; flex-direction: column; gap: 8px; }
+  .match-card {
+    background: #0d2617;
+    border: 1px solid rgba(26,188,94,.14);
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: grid;
+    grid-template-columns: 110px 1fr auto 1fr 100px;
+    align-items: center;
+    gap: 8px;
+    transition: border-color .2s, background .2s;
+  }
+  .match-card:hover {
+    border-color: rgba(26,188,94,.4);
+    background: rgba(15,107,52,.25);
+  }
+  .match-card.today {
+    border-color: var(--gold);
+    background: rgba(240,192,66,.07);
+  }
+  .match-card.past { opacity: .55; }
+
+  .match-date { font-size: .78rem; color: var(--gray-2); }
+  .match-date strong { display: block; font-size: .9rem; color: var(--gold); font-weight: 600; }
+  .match-date span { font-size: .72rem; }
+
+  .team-a { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+  .team-b { text-align: left; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+  .team-a .tn, .team-b .tn { font-size: .88rem; font-weight: 500; color: var(--white); }
+  .team-a .fl, .team-b .fl { font-size: 1.1rem; }
+
+  .score-box {
+    text-align: center;
+    background: #081a0f;
+    border-radius: 8px;
+    padding: 6px 14px;
+    min-width: 70px;
+  }
+  .score-box .vs { font-size: .8rem; color: var(--gray-2); font-weight: 500; letter-spacing: 2px; }
+  .score-box .sc { font-family: 'Oswald', sans-serif; font-size: 1.2rem; color: #fff; font-weight: 700; }
+  .score-box .sc.live { color: var(--green-light); }
+  .score-box .sc.ft { color: var(--white); }
+
+  .match-venue { font-size: .72rem; color: var(--gray-3); text-align: right; }
+  .match-venue strong { display: block; color: var(--gray-2); font-size: .78rem; font-weight: 500; }
+
+  /* ── AFF CUP / GIAO HỮU cards ── */
+  .friendly-card {
+    background: #0d2617;
+    border: 1px solid rgba(26,188,94,.18);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 14px;
+  }
+  .friendly-card h4 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(240,192,66,.2);
+  }
+
+  /* ── ASIAN CUP BẢNG ── */
+  .ac-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+  .ac-group {
+    background: #0d2617;
+    border: 1px solid rgba(26,188,94,.18);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .ac-group-hdr {
+    padding: 10px 16px;
+    background: linear-gradient(90deg, #0f6b34, #1abc5e44);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .ac-group-hdr .gl {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 1px;
+  }
+  .ac-group-hdr .gn { font-size: .8rem; color: rgba(255,255,255,.65); }
+  .death-hdr { background: linear-gradient(90deg, #8b0000, #e63946aa) !important; }
+  .ac-group-body { padding: 10px 14px; }
+
+  /* ── KNOCKOUT BRACKET ── */
+  .knockout-info {
+    background: rgba(15,107,52,.15);
+    border: 1px dashed rgba(26,188,94,.3);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .knockout-info h3 {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
+    color: var(--gold);
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+  .ko-timeline {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0;
+  }
+  .ko-step {
+    text-align: center;
+    padding: 10px 14px;
+    position: relative;
+  }
+  .ko-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--green-light);
+    font-size: 1rem;
+  }
+  .ko-step .kd { font-size: .72rem; color: var(--gray-3); }
+  .ko-step .kr { font-family: 'Oswald', sans-serif; font-size: .95rem; color: var(--white); font-weight: 600; }
+  .ko-step .kt { font-size: .72rem; color: var(--gray-2); margin-top: 2px; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    text-align: center;
+    padding: 24px;
+    border-top: 1px solid rgba(26,188,94,.15);
+    font-size: .78rem;
+    color: var(--gray-3);
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #0a1a0e; }
+  ::-webkit-scrollbar-thumb { background: var(--green-mid); border-radius: 3px; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    .match-card {
+      grid-template-columns: 80px 1fr auto 1fr;
+      grid-template-rows: auto auto;
+    }
+    .match-venue {
+      grid-column: 1 / -1;
+      text-align: left;
+      margin-top: 4px;
+    }
+    .tabs { justify-content: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>⚽ Lịch Bóng Đá <span>2026 – 2027</span></h1>
+  <p>World Cup 2026 &nbsp;·&nbsp; Giao hữu / AFF Cup &nbsp;·&nbsp; AFC Asian Cup 2027</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('wc')">🌍 World Cup 2026</button>
+  <button class="tab-btn" onclick="showTab('gh')">🤝 Giao Hữu & AFF Cup</button>
+  <button class="tab-btn" onclick="showTab('ac')">🌏 AFC Asian Cup 2027</button>
+</div>
+
+<!-- ════════════════════════ PANEL 1: WORLD CUP ════════════════════════ -->
+<div id="panel-wc" class="panel active">
+
+  <div class="section-header">
+    <div class="section-icon">🏆</div>
+    <div>
+      <h2>FIFA World Cup 2026</h2>
+      <p>Mỹ · Canada · Mexico &nbsp;|&nbsp; 11/6 – 19/7/2026 &nbsp;|&nbsp; 48 đội · 104 trận</p>
+    </div>
+  </div>
+
+  <div class="info-cards">
+    <div class="info-card"><div class="val">48</div><div class="lbl">Đội tham dự</div></div>
+    <div class="info-card"><div class="val">104</div><div class="lbl">Trận đấu</div></div>
+    <div class="info-card"><div class="val">12</div><div class="lbl">Bảng đấu</div></div>
+    <div class="info-card"><div class="val">16</div><div class="lbl">Thành phố đăng cai</div></div>
+    <div class="info-card"><div class="val">38</div><div class="lbl">Ngày thi đấu</div></div>
+  </div>
+
+  <!-- 12 BẢNG ĐẤU -->
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-icon" style="font-size:1rem;">📋</div>
+    <div><h2 style="font-size:1.2rem;">12 Bảng đấu vòng bảng</h2></div>
+  </div>
+
+  <div class="groups-grid">
+    <!-- Bảng A -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG A</span>
+        <span class="group-badge">Mexico City / Guadalajara</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇲🇽</span><span class="team-name host">Mexico</span><span class="tag host-tag">CH</span></div>
+        <div class="team-row"><span class="flag">🇿🇦</span><span class="team-name">Nam Phi</span></div>
+        <div class="team-row"><span class="flag">🇰🇷</span><span class="team-name">Hàn Quốc</span></div>
+        <div class="team-row"><span class="flag">🇨🇿</span><span class="team-name">CH Séc</span></div>
+      </div>
+    </div>
+    <!-- Bảng B -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG B</span>
+        <span class="group-badge">Toronto / Santa Clara</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇨🇦</span><span class="team-name host">Canada</span><span class="tag host-tag">CH</span></div>
+        <div class="team-row"><span class="flag">🇧🇦</span><span class="team-name">Bosnia & Herzegovina</span></div>
+        <div class="team-row"><span class="flag">🇶🇦</span><span class="team-name">Qatar</span></div>
+        <div class="team-row"><span class="flag">🇨🇭</span><span class="team-name">Thụy Sĩ</span></div>
+      </div>
+    </div>
+    <!-- Bảng C -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG C</span>
+        <span class="group-badge">New Jersey / Foxborough</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇧🇷</span><span class="team-name">Brazil</span></div>
+        <div class="team-row"><span class="flag">🇲🇦</span><span class="team-name">Maroc</span></div>
+        <div class="team-row"><span class="flag">🇭🇹</span><span class="team-name">Haiti</span></div>
+        <div class="team-row"><span class="flag">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span><span class="team-name">Scotland</span></div>
+      </div>
+    </div>
+    <!-- Bảng D -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG D</span>
+        <span class="group-badge">Los Angeles / Vancouver</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇺🇸</span><span class="team-name host">Mỹ</span><span class="tag host-tag">CH</span></div>
+        <div class="team-row"><span class="flag">🇵🇾</span><span class="team-name">Paraguay</span></div>
+        <div class="team-row"><span class="flag">🇦🇺</span><span class="team-name">Australia</span></div>
+        <div class="team-row"><span class="flag">🇹🇷</span><span class="team-name">Thổ Nhĩ Kỳ</span></div>
+      </div>
+    </div>
+    <!-- Bảng E -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG E</span>
+        <span class="group-badge">Houston / Arlington</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇩🇪</span><span class="team-name">Đức</span></div>
+        <div class="team-row"><span class="flag">🇨🇮</span><span class="team-name">Bờ Biển Ngà</span></div>
+        <div class="team-row"><span class="flag">🇪🇨</span><span class="team-name">Ecuador</span></div>
+        <div class="team-row"><span class="flag">🇨🇼</span><span class="team-name">Curaçao</span></div>
+      </div>
+    </div>
+    <!-- Bảng F -->
+    <div class="group-card">
+      <div class="group-card-header" style="background:#1a4a7a;">
+        <span class="group-label">BẢNG F</span>
+        <span class="group-badge" style="background:rgba(255,255,255,.15);">Arlington / Guadalupe</span>
+        <span class="tag death-tag" style="margin-left:auto;">Tử thần</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇳🇱</span><span class="team-name">Hà Lan</span></div>
+        <div class="team-row"><span class="flag">🇯🇵</span><span class="team-name">Nhật Bản</span></div>
+        <div class="team-row"><span class="flag">🇸🇪</span><span class="team-name">Thụy Điển</span></div>
+        <div class="team-row"><span class="flag">🇹🇳</span><span class="team-name">Tunisia</span></div>
+      </div>
+    </div>
+    <!-- Bảng G -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG G</span>
+        <span class="group-badge">Seattle / Los Angeles</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇧🇪</span><span class="team-name">Bỉ</span></div>
+        <div class="team-row"><span class="flag">🇮🇷</span><span class="team-name">Iran</span></div>
+        <div class="team-row"><span class="flag">🇪🇬</span><span class="team-name">Ai Cập</span></div>
+        <div class="team-row"><span class="flag">🇳🇿</span><span class="team-name">New Zealand</span></div>
+      </div>
+    </div>
+    <!-- Bảng H -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG H</span>
+        <span class="group-badge">Atlanta / Miami</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇪🇸</span><span class="team-name">Tây Ban Nha</span></div>
+        <div class="team-row"><span class="flag">🇸🇦</span><span class="team-name">Saudi Arabia</span></div>
+        <div class="team-row"><span class="flag">🇺🇾</span><span class="team-name">Uruguay</span></div>
+        <div class="team-row"><span class="flag">🇨🇻</span><span class="team-name">Cape Verde</span></div>
+      </div>
+    </div>
+    <!-- Bảng I -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG I</span>
+        <span class="group-badge">New York / Boston</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇫🇷</span><span class="team-name">Pháp</span></div>
+        <div class="team-row"><span class="flag">🇮🇶</span><span class="team-name">Iraq</span></div>
+        <div class="team-row"><span class="flag">🇸🇳</span><span class="team-name">Senegal</span></div>
+        <div class="team-row"><span class="flag">🇳🇴</span><span class="team-name">Na Uy</span></div>
+      </div>
+    </div>
+    <!-- Bảng J -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG J</span>
+        <span class="group-badge">Kansas City / Dallas</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇦🇷</span><span class="team-name">Argentina</span></div>
+        <div class="team-row"><span class="flag">🇦🇹</span><span class="team-name">Áo</span></div>
+        <div class="team-row"><span class="flag">🇩🇿</span><span class="team-name">Algeria</span></div>
+        <div class="team-row"><span class="flag">🇯🇴</span><span class="team-name">Jordan</span></div>
+      </div>
+    </div>
+    <!-- Bảng K -->
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG K</span>
+        <span class="group-badge">San Francisco / Denver</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇵🇹</span><span class="team-name">Bồ Đào Nha</span></div>
+        <div class="team-row"><span class="flag">🇺🇿</span><span class="team-name">Uzbekistan</span></div>
+        <div class="team-row"><span class="flag">🇨🇴</span><span class="team-name">Colombia</span></div>
+        <div class="team-row"><span class="flag">🏝️</span><span class="team-name" style="color:var(--gray-2);">Play-off FIFA 1</span></div>
+      </div>
+    </div>
+    <!-- Bảng L (Tử thần) -->
+    <div class="group-card">
+      <div class="group-card-header" style="background:#5a0a0a;">
+        <span class="group-label">BẢNG L</span>
+        <span class="group-badge" style="background:rgba(255,255,255,.12);">New York / Boston</span>
+        <span class="tag death-tag" style="margin-left:auto;">Tử thần</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><span class="team-name">Anh</span></div>
+        <div class="team-row"><span class="flag">🇭🇷</span><span class="team-name">Croatia</span></div>
+        <div class="team-row"><span class="flag">🇬🇭</span><span class="team-name">Ghana</span></div>
+        <div class="team-row"><span class="flag">🇵🇦</span><span class="team-name">Panama</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LỊCH THI ĐẤU VÒNG BẢNG MỞ ĐẦU -->
+  <div class="schedule-section">
+    <h3>⚽ Vòng bảng – Các trận đã diễn ra &amp; sắp đến</h3>
+    <div class="match-list">
+
+      <!-- Trận 1 - ĐÃ QUA -->
+      <div class="match-card past">
+        <div class="match-date"><strong>12/06</strong><span>02:00</span></div>
+        <div class="team-a"><span class="fl">🇲🇽</span><span class="tn">Mexico</span></div>
+        <div class="score-box"><div class="sc ft">2 – 0</div></div>
+        <div class="team-b"><span class="fl">🇿🇦</span><span class="tn">Nam Phi</span></div>
+        <div class="match-venue"><strong>Bảng A</strong>Azteca, Mexico City</div>
+      </div>
+
+      <div class="match-card past">
+        <div class="match-date"><strong>12/06</strong><span>09:00</span></div>
+        <div class="team-a"><span class="fl">🇰🇷</span><span class="tn">Hàn Quốc</span></div>
+        <div class="score-box"><div class="sc ft">2 – 1</div></div>
+        <div class="team-b"><span class="fl">🇨🇿</span><span class="tn">CH Séc</span></div>
+        <div class="match-venue"><strong>Bảng A</strong>Estadio Guadalajara</div>
+      </div>
+
+      <div class="match-card today">
+        <div class="match-date"><strong>13/06</strong><span>02:00</span></div>
+        <div class="team-a"><span class="fl">🇨🇦</span><span class="tn">Canada</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇧🇦</span><span class="tn">Bosnia</span></div>
+        <div class="match-venue"><strong>Bảng B</strong>BMO Field, Toronto</div>
+      </div>
+
+      <div class="match-card today">
+        <div class="match-date"><strong>13/06</strong><span>08:00</span></div>
+        <div class="team-a"><span class="fl">🇺🇸</span><span class="tn">Mỹ</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇵🇾</span><span class="tn">Paraguay</span></div>
+        <div class="match-venue"><strong>Bảng D</strong>SoFi Stadium, LA</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>14/06</strong><span>02:00</span></div>
+        <div class="team-a"><span class="fl">🇶🇦</span><span class="tn">Qatar</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇨🇭</span><span class="tn">Thụy Sĩ</span></div>
+        <div class="match-venue"><strong>Bảng B</strong>Levi's Stadium, Santa Clara</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>14/06</strong><span>05:00</span></div>
+        <div class="team-a"><span class="fl">🇧🇷</span><span class="tn">Brazil</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇲🇦</span><span class="tn">Maroc</span></div>
+        <div class="match-venue"><strong>Bảng C</strong>MetLife Stadium, NJ</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>14/06</strong><span>08:00</span></div>
+        <div class="team-a"><span class="fl">🇭🇹</span><span class="tn">Haiti</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span><span class="tn">Scotland</span></div>
+        <div class="match-venue"><strong>Bảng C</strong>Gillette Stadium, Foxborough</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>14/06</strong><span>11:00</span></div>
+        <div class="team-a"><span class="fl">🇦🇺</span><span class="tn">Australia</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇹🇷</span><span class="tn">Thổ Nhĩ Kỳ</span></div>
+        <div class="match-venue"><strong>Bảng D</strong>BC Place, Vancouver</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>15/06</strong><span>00:00</span></div>
+        <div class="team-a"><span class="fl">🇩🇪</span><span class="tn">Đức</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇨🇼</span><span class="tn">Curaçao</span></div>
+        <div class="match-venue"><strong>Bảng E</strong>NRG Stadium, Houston</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>15/06</strong><span>03:00</span></div>
+        <div class="team-a"><span class="fl">🇳🇱</span><span class="tn">Hà Lan</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇯🇵</span><span class="tn">Nhật Bản</span></div>
+        <div class="match-venue"><strong>Bảng F</strong>AT&T Stadium, Arlington</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>15/06</strong><span>23:00</span></div>
+        <div class="team-a"><span class="fl">🇪🇸</span><span class="tn">Tây Ban Nha</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇨🇻</span><span class="tn">Cape Verde</span></div>
+        <div class="match-venue"><strong>Bảng H</strong>Mercedes-Benz, Atlanta</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>16/06</strong><span>05:00</span></div>
+        <div class="team-a"><span class="fl">🇸🇦</span><span class="tn">Saudi Arabia</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇺🇾</span><span class="tn">Uruguay</span></div>
+        <div class="match-venue"><strong>Bảng H</strong>Hard Rock Stadium, Miami</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>16/06</strong><span>02:00</span></div>
+        <div class="team-a"><span class="fl">🇧🇪</span><span class="tn">Bỉ</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇪🇬</span><span class="tn">Ai Cập</span></div>
+        <div class="match-venue"><strong>Bảng G</strong>Lumen Field, Seattle</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>17/06</strong><span>02:00</span></div>
+        <div class="team-a"><span class="fl">🇫🇷</span><span class="tn">Pháp</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇸🇳</span><span class="tn">Senegal</span></div>
+        <div class="match-venue"><strong>Bảng I</strong>MetLife Stadium, NJ</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>17/06</strong><span>08:00</span></div>
+        <div class="team-a"><span class="fl">🇦🇷</span><span class="tn">Argentina</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇩🇿</span><span class="tn">Algeria</span></div>
+        <div class="match-venue"><strong>Bảng J</strong>Arrowhead, Kansas City</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>18/06</strong><span>08:00</span></div>
+        <div class="team-a"><span class="fl">🇵🇹</span><span class="tn">Bồ Đào Nha</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇺🇿</span><span class="tn">Uzbekistan</span></div>
+        <div class="match-venue"><strong>Bảng K</strong>Levi's Stadium, Santa Clara</div>
+      </div>
+
+      <div class="match-card">
+        <div class="match-date"><strong>20/06</strong><span>08:00</span></div>
+        <div class="team-a"><span class="fl">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><span class="tn">Anh</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇭🇷</span><span class="tn">Croatia</span></div>
+        <div class="match-venue"><strong>Bảng L</strong>Gillette Stadium, Foxborough</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LỊCH KNOCK-OUT -->
+  <div class="knockout-info">
+    <h3>🔥 Lịch vòng loại trực tiếp (Dự kiến)</h3>
+    <div class="ko-timeline">
+      <div class="ko-step"><div class="kd">28/6 – 5/7</div><div class="kr">Vòng 1/16</div><div class="kt">32 đội</div></div>
+      <div class="ko-step"><div class="kd">7/7 – 11/7</div><div class="kr">Vòng 1/8</div><div class="kt">16 đội</div></div>
+      <div class="ko-step"><div class="kd">14/7 – 15/7</div><div class="kr">Tứ kết</div><div class="kt">8 đội</div></div>
+      <div class="ko-step"><div class="kd">17/7 – 18/7</div><div class="kr">Bán kết</div><div class="kt">4 đội</div></div>
+      <div class="ko-step"><div class="kd">19/7</div><div class="kr">Hạng 3</div><div class="kt"></div></div>
+      <div class="ko-step"><div class="kd">20/7</div><div class="kr">🏆 Chung kết</div><div class="kt">MetLife, NJ</div></div>
+    </div>
+  </div>
+
+</div><!-- end panel-wc -->
+
+
+<!-- ════════════════════════ PANEL 2: GIAO HỮU & AFF CUP ════════════════════════ -->
+<div id="panel-gh" class="panel">
+
+  <div class="section-header">
+    <div class="section-icon">🤝</div>
+    <div>
+      <h2>Giao Hữu Quốc Tế & AFF Cup 2026</h2>
+      <p>Các trận giao hữu FIFA Days &amp; Giải vô địch bóng đá Đông Nam Á (ASEAN Cup 2026)</p>
+    </div>
+  </div>
+
+  <!-- FIFA DAYS INFO -->
+  <div class="friendly-card">
+    <h4>📅 Các đợt FIFA Days 2026</h4>
+    <div class="match-list">
+      <div class="match-card past">
+        <div class="match-date"><strong>Tháng 3</strong><span>2026</span></div>
+        <div class="team-a"><span class="tn">FIFA Days T3</span></div>
+        <div class="score-box"><div class="sc ft">✅</div></div>
+        <div class="team-b"><span class="tn">Đã diễn ra</span></div>
+        <div class="match-venue"><strong>Giao hữu</strong>Các ĐTQG toàn cầu</div>
+      </div>
+      <div class="match-card past">
+        <div class="match-date"><strong>Tháng 6</strong><span>2026</span></div>
+        <div class="team-a"><span class="tn">FIFA Days T6</span></div>
+        <div class="score-box"><div class="sc ft">⏭</div></div>
+        <div class="team-b"><span class="tn" style="color:var(--gray-2);">Việt Nam nghỉ</span></div>
+        <div class="match-venue"><strong>Giao hữu</strong>ĐT VN tập trung quốc nội</div>
+      </div>
+      <div class="match-card">
+        <div class="match-date"><strong>Tháng 9</strong><span>2026</span></div>
+        <div class="team-a"><span class="tn">FIFA Days T9</span></div>
+        <div class="score-box"><div class="vs">TBD</div></div>
+        <div class="team-b"><span class="tn">Sắp diễn ra</span></div>
+        <div class="match-venue"><strong>Giao hữu</strong>Các ĐTQG</div>
+      </div>
+      <div class="match-card">
+        <div class="match-date"><strong>Tháng 10</strong><span>2026</span></div>
+        <div class="team-a"><span class="tn">FIFA Days T10</span></div>
+        <div class="score-box"><div class="vs">TBD</div></div>
+        <div class="team-b"><span class="tn">Sắp diễn ra</span></div>
+        <div class="match-venue"><strong>Giao hữu</strong>Chuẩn bị Asian Cup</div>
+      </div>
+      <div class="match-card">
+        <div class="match-date"><strong>Tháng 11</strong><span>2026</span></div>
+        <div class="team-a"><span class="tn">FIFA Days T11</span></div>
+        <div class="score-box"><div class="vs">TBD</div></div>
+        <div class="team-b"><span class="tn">Sắp diễn ra</span></div>
+        <div class="match-venue"><strong>Giao hữu</strong>Chuẩn bị Asian Cup</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GIAO HỮU NỔI BẬT TRƯỚC WORLD CUP -->
+  <div class="friendly-card">
+    <h4>🌟 Giao hữu nổi bật trước World Cup 2026</h4>
+    <div class="match-list">
+      <div class="match-card past">
+        <div class="match-date"><strong>T5/2026</strong><span>Giao hữu</span></div>
+        <div class="team-a"><span class="fl">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><span class="tn">Anh</span></div>
+        <div class="score-box"><div class="sc ft">6 – 0</div></div>
+        <div class="team-b"><span class="tn">Miami FC</span></div>
+        <div class="match-venue"><strong>Tập huấn</strong>Florida, Mỹ</div>
+      </div>
+      <div class="match-card past">
+        <div class="match-date"><strong>T5/2026</strong><span>Giao hữu</span></div>
+        <div class="team-a"><span class="fl">🇫🇷</span><span class="tn">Pháp</span></div>
+        <div class="score-box"><div class="sc ft">NN</div></div>
+        <div class="team-b"><span class="fl">🇨🇮</span><span class="tn">Bờ Biển Ngà</span></div>
+        <div class="match-venue"><strong>Giao hữu</strong>Trước WC 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFF CUP 2026 -->
+  <div class="section-header" style="margin-top: 16px;">
+    <div class="section-icon">🦁</div>
+    <div>
+      <h2>AFF Cup / ASEAN Cup 2026</h2>
+      <p>24/7 – 26/8/2026 &nbsp;|&nbsp; Lần đầu tổ chức mùa hè &nbsp;|&nbsp; Việt Nam đương kim vô địch</p>
+    </div>
+  </div>
+
+  <div class="info-cards">
+    <div class="info-card"><div class="val">10</div><div class="lbl">Đội tuyển</div></div>
+    <div class="info-card"><div class="val">2</div><div class="lbl">Bảng đấu</div></div>
+    <div class="info-card"><div class="val">24/7</div><div class="lbl">Khai mạc</div></div>
+    <div class="info-card"><div class="val">26/8</div><div class="lbl">Chung kết lượt về</div></div>
+  </div>
+
+  <!-- BẢNG A AFF -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-bottom:24px;">
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG A</span>
+        <span class="group-badge">AFF Cup 2026</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇻🇳</span><span class="team-name host">Việt Nam 🏆</span><span class="tag host-tag">ĐKVĐ</span></div>
+        <div class="team-row"><span class="flag">🇮🇩</span><span class="team-name">Indonesia</span></div>
+        <div class="team-row"><span class="flag">🇸🇬</span><span class="team-name">Singapore</span></div>
+        <div class="team-row"><span class="flag">🇰🇭</span><span class="team-name">Campuchia</span></div>
+        <div class="team-row"><span class="flag">🏝️</span><span class="team-name" style="color:var(--gray-2);">Timor Leste / Brunei</span></div>
+      </div>
+    </div>
+    <div class="group-card">
+      <div class="group-card-header">
+        <span class="group-label">BẢNG B</span>
+        <span class="group-badge">AFF Cup 2026</span>
+      </div>
+      <div class="group-card-body">
+        <div class="team-row"><span class="flag">🇹🇭</span><span class="team-name">Thái Lan</span></div>
+        <div class="team-row"><span class="flag">🇲🇾</span><span class="team-name">Malaysia</span></div>
+        <div class="team-row"><span class="flag">🇵🇭</span><span class="team-name">Philippines</span></div>
+        <div class="team-row"><span class="flag">🇲🇲</span><span class="team-name">Myanmar</span></div>
+        <div class="team-row"><span class="flag">🇱🇦</span><span class="team-name">Lào</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LỊCH ĐTVN TẠI AFF CUP -->
+  <div class="schedule-section">
+    <h3>🇻🇳 Lịch thi đấu Đội tuyển Việt Nam – AFF Cup 2026</h3>
+    <div class="match-list">
+      <div class="match-card">
+        <div class="match-date"><strong>24/07</strong><span>19:30</span></div>
+        <div class="team-a"><span class="fl">🏝️</span><span class="tn">T.Leste/Brunei</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
+        <div class="match-venue"><strong>Vòng bảng</strong>Sân khách</div>
+      </div>
+      <div class="match-card">
+        <div class="match-date"><strong>31/07</strong><span>19:30</span></div>
+        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇸🇬</span><span class="tn">Singapore</span></div>
+        <div class="match-venue"><strong>Vòng bảng</strong>Mỹ Đình, Hà Nội</div>
+      </div>
+      <div class="match-card">
+        <div class="match-date"><strong>03/08</strong><span>20:00</span></div>
+        <div class="team-a"><span class="fl">🇮🇩</span><span class="tn">Indonesia</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
+        <div class="match-venue"><strong>Vòng bảng</strong>Sân khách – Jakarta</div>
+      </div>
+      <div class="match-card">
+        <div class="match-date"><strong>07/08</strong><span>19:30</span></div>
+        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇰🇭</span><span class="tn">Campuchia</span></div>
+        <div class="match-venue"><strong>Vòng bảng</strong>Mỹ Đình, Hà Nội</div>
+      </div>
+      <div class="match-card">
+        <div class="match-date"><strong>15-19/8</strong><span></span></div>
+        <div class="team-a"><span class="tn">Bán kết</span></div>
+        <div class="score-box"><div class="vs">TBD</div></div>
+        <div class="team-b"><span class="tn">Lượt đi/về</span></div>
+        <div class="match-venue"><strong>Bán kết</strong>Theo xếp hạng</div>
+      </div>
+      <div class="match-card">
+        <div class="match-date"><strong>23 &amp; 26/8</strong><span></span></div>
+        <div class="team-a"><span class="tn">Chung kết</span></div>
+        <div class="score-box"><div class="vs">🏆</div></div>
+        <div class="team-b"><span class="tn">Lượt đi/về</span></div>
+        <div class="match-venue"><strong>Chung kết</strong>FPT Play phát sóng</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end panel-gh -->
+
+
+<!-- ════════════════════════ PANEL 3: AFC ASIAN CUP 2027 ════════════════════════ -->
+<div id="panel-ac" class="panel">
+
+  <div class="section-header">
+    <div class="section-icon">🌙</div>
+    <div>
+      <h2>AFC Asian Cup Saudi Arabia 2027</h2>
+      <p>Saudi Arabia &nbsp;|&nbsp; 7/1 – 5/2/2027 &nbsp;|&nbsp; Riyadh · Jeddah · Al Khobar</p>
+    </div>
+  </div>
+
+  <div class="info-cards">
+    <div class="info-card"><div class="val">24</div><div class="lbl">Đội tham dự</div></div>
+    <div class="info-card"><div class="val">6</div><div class="lbl">Bảng đấu</div></div>
+    <div class="info-card"><div class="val">8</div><div class="lbl">Sân vận động</div></div>
+    <div class="info-card"><div class="val">7/1</div><div class="lbl">Khai mạc</div></div>
+    <div class="info-card"><div class="val">5/2</div><div class="lbl">Chung kết</div></div>
+  </div>
+
+  <div class="section-header" style="margin-top:8px;">
+    <div class="section-icon" style="font-size:1rem;">📋</div>
+    <div><h2 style="font-size:1.2rem;">6 Bảng đấu VCK</h2></div>
+  </div>
+
+  <div class="ac-groups">
+    <!-- Bảng A -->
+    <div class="ac-group">
+      <div class="ac-group-hdr">
+        <span class="gl">BẢNG A</span>
+        <span class="gn">Chủ nhà</span>
+        <span class="tag host-tag" style="margin-left:auto;">Riyadh</span>
+      </div>
+      <div class="ac-group-body">
+        <div class="team-row"><span class="flag">🇸🇦</span><span class="team-name host">Saudi Arabia</span><span class="tag host-tag">CH</span></div>
+        <div class="team-row"><span class="flag">🇰🇼</span><span class="team-name">Kuwait</span></div>
+        <div class="team-row"><span class="flag">🇴🇲</span><span class="team-name">Oman</span></div>
+        <div class="team-row"><span class="flag">🇵🇸</span><span class="team-name">Palestine</span></div>
+      </div>
+    </div>
+    <!-- Bảng B -->
+    <div class="ac-group">
+      <div class="ac-group-hdr">
+        <span class="gl">BẢNG B</span>
+        <span class="gn">Tây Á</span>
+      </div>
+      <div class="ac-group-body">
+        <div class="team-row"><span class="flag">🇮🇷</span><span class="team-name">Iran</span></div>
+        <div class="team-row"><span class="flag">🇦🇺</span><span class="team-name">Australia</span></div>
+        <div class="team-row"><span class="flag">🇧🇭</span><span class="team-name">Bahrain</span></div>
+        <div class="team-row"><span class="flag">🇸🇾</span><span class="team-name">Syria</span></div>
+      </div>
+    </div>
+    <!-- Bảng C -->
+    <div class="ac-group">
+      <div class="ac-group-hdr">
+        <span class="gl">BẢNG C</span>
+        <span class="gn">Đông Á</span>
+      </div>
+      <div class="ac-group-body">
+        <div class="team-row"><span class="flag">🇮🇶</span><span class="team-name">Iraq</span></div>
+        <div class="team-row"><span class="flag">🇨🇳</span><span class="team-name">Trung Quốc</span></div>
+        <div class="team-row"><span class="flag">🇯🇴</span><span class="team-name">Jordan</span></div>
+        <div class="team-row"><span class="flag">🇰🇬</span><span class="team-name">Kyrgyzstan</span></div>
+      </div>
+    </div>
+    <!-- Bảng D -->
+    <div class="ac-group">
+      <div class="ac-group-hdr">
+        <span class="gl">BẢNG D</span>
+        <span class="gn">Trung Á</span>
+      </div>
+      <div class="ac-group-body">
+        <div class="team-row"><span class="flag">🇺🇿</span><span class="team-name">Uzbekistan</span></div>
+        <div class="team-row"><span class="flag">🇶🇦</span><span class="team-name">Qatar 🏆</span></div>
+        <div class="team-row"><span class="flag">🇰🇵</span><span class="team-name">Triều Tiên</span></div>
+        <div class="team-row"><span class="flag">🇹🇯</span><span class="team-name">Tajikistan</span></div>
+      </div>
+    </div>
+    <!-- Bảng E – Việt Nam -->
+    <div class="ac-group" style="border-color:rgba(240,192,66,.4);">
+      <div class="ac-group-hdr" style="background:linear-gradient(90deg,#6b4400,#c8971d88);">
+        <span class="gl">BẢNG E</span>
+        <span class="gn" style="color:var(--gold);">🇻🇳 Có Việt Nam</span>
+      </div>
+      <div class="ac-group-body">
+        <div class="team-row"><span class="flag">🇰🇷</span><span class="team-name" style="color:#fff;">Hàn Quốc</span></div>
+        <div class="team-row"><span class="flag">🇦🇪</span><span class="team-name">UAE</span></div>
+        <div class="team-row"><span class="flag">🇻🇳</span><span class="team-name host">Việt Nam 🌟</span></div>
+        <div class="team-row"><span class="flag">🇱🇧</span><span class="team-name" style="color:var(--gray-2);">Lebanon / Yemen</span></div>
+      </div>
+    </div>
+    <!-- Bảng F – Tử thần -->
+    <div class="ac-group">
+      <div class="ac-group-hdr death-hdr">
+        <span class="gl">BẢNG F</span>
+        <span class="gn">ĐNÁ đại chiến</span>
+        <span class="tag death-tag" style="margin-left:auto;">Tử thần</span>
+      </div>
+      <div class="ac-group-body">
+        <div class="team-row"><span class="flag">🇯🇵</span><span class="team-name">Nhật Bản</span></div>
+        <div class="team-row"><span class="flag">🇶🇦</span><span class="team-name">Qatar</span></div>
+        <div class="team-row"><span class="flag">🇹🇭</span><span class="team-name">Thái Lan</span></div>
+        <div class="team-row"><span class="flag">🇮🇩</span><span class="team-name">Indonesia</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LỊCH SƠ BỘ -->
+  <div class="schedule-section" style="margin-top:28px;">
+    <h3>📅 Lịch dự kiến – Vòng bảng (Giờ Việt Nam)</h3>
+    <div class="match-list">
+      <div class="match-card">
+        <div class="match-date"><strong>07/01/27</strong><span>21:00</span></div>
+        <div class="team-a"><span class="fl">🇸🇦</span><span class="tn">Saudi Arabia</span></div>
+        <div class="score-box"><div class="vs">Khai mạc</div></div>
+        <div class="team-b"><span class="tn">TBD (A4)</span></div>
+        <div class="match-venue"><strong>Bảng A</strong>King Fahd, Riyadh</div>
+      </div>
+      <div class="match-card" style="border-color:rgba(240,192,66,.35);">
+        <div class="match-date"><strong>~11/01/27</strong><span></span></div>
+        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇦🇪</span><span class="tn">UAE</span></div>
+        <div class="match-venue"><strong>Bảng E</strong>Saudi Arabia</div>
+      </div>
+      <div class="match-card" style="border-color:rgba(240,192,66,.35);">
+        <div class="match-date"><strong>~15/01/27</strong><span></span></div>
+        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇰🇷</span><span class="tn">Hàn Quốc</span></div>
+        <div class="match-venue"><strong>Bảng E</strong>Saudi Arabia</div>
+      </div>
+      <div class="match-card" style="border-color:rgba(240,192,66,.35);">
+        <div class="match-date"><strong>~19/01/27</strong><span></span></div>
+        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
+        <div class="score-box"><div class="vs">VS</div></div>
+        <div class="team-b"><span class="fl">🇱🇧</span><span class="tn">Lebanon/Yemen</span></div>
+        <div class="match-venue"><strong>Bảng E</strong>Saudi Arabia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- THÔNG TIN ĐỘI TUYỂN VIỆT NAM -->
+  <div class="friendly-card" style="border-color:rgba(240,192,66,.3);">
+    <h4>🇻🇳 Hành trình Đội tuyển Việt Nam</h4>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;font-size:.85rem;">
+      <div style="background:#081a0f;padding:14px;border-radius:8px;">
+        <div style="color:var(--gold);font-weight:700;margin-bottom:6px;">Vòng loại</div>
+        <div style="color:var(--gray-2);">Toàn thắng 6 trận bảng F (Malaysia, Lào, Nepal). <span style="color:var(--green-light);">Đứng đầu bảng</span>.</div>
+      </div>
+      <div style="background:#081a0f;padding:14px;border-radius:8px;">
+        <div style="color:var(--gold);font-weight:700;margin-bottom:6px;">Nhóm hạt giống</div>
+        <div style="color:var(--gray-2);">Nhóm 3 (FIFA thứ 99). Cùng bảng E với Hàn Quốc, UAE và Lebanon/Yemen.</div>
+      </div>
+      <div style="background:#081a0f;padding:14px;border-radius:8px;">
+        <div style="color:var(--gold);font-weight:700;margin-bottom:6px;">HLV</div>
+        <div style="color:var(--gray-2);">Kim Sang-sik dẫn dắt. Lần thứ 4 Việt Nam dự VCK Asian Cup.</div>
+      </div>
+      <div style="background:#081a0f;padding:14px;border-radius:8px;">
+        <div style="color:var(--gold);font-weight:700;margin-bottom:6px;">Thành tích tốt nhất</div>
+        <div style="color:var(--gray-2);">Tứ kết năm 2007 và 2019. Mục tiêu ít nhất vòng 1/8.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KNOCKOUT -->
+  <div class="knockout-info">
+    <h3>🏆 Thể thức vòng knock-out</h3>
+    <div class="ko-timeline">
+      <div class="ko-step"><div class="kd">24/01/27</div><div class="kr">Vòng 1/8</div><div class="kt">16 đội</div></div>
+      <div class="ko-step"><div class="kd">28–29/01</div><div class="kr">Tứ kết</div><div class="kt">8 đội</div></div>
+      <div class="ko-step"><div class="kd">01–02/02</div><div class="kr">Bán kết</div><div class="kt">4 đội</div></div>
+      <div class="ko-step"><div class="kd">04/02/27</div><div class="kr">Hạng 3</div><div class="kt"></div></div>
+      <div class="ko-step"><div class="kd">05/02/27</div><div class="kr">🏆 Chung kết</div><div class="kt">King Fahd, Riyadh</div></div>
+    </div>
+    <p style="margin-top:14px;font-size:.8rem;color:var(--gray-3);">16 đội vào vòng 1/8 = 12 đội nhất/nhì bảng + 4 đội hạng 3 tốt nhất</p>
+  </div>
+
+</div><!-- end panel-ac -->
+
+<!-- FOOTER -->
+<div class="page-footer">
+  Dữ liệu cập nhật 13/6/2026 · World Cup 2026 đang diễn ra · AFC Asian Cup 2027: Lịch thi đấu chi tiết chưa chính thức · Giờ theo giờ Việt Nam (GMT+7)
+</div>
+
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+</script>
+
+</body>
+  </html>
