@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>ExScore | Lịch thi đấu bóng đá 2026</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAzUlEQVRYhe2W3Q2AIAiE7050AkdwA0dwI3cQN5C4kR8RaH2A8l5U+9JcCAh8HtzlXNZ1BQAAAMAMiDEGxhgYY2CMgTEGxhgYY2CMgTEGmP9iMZmLrn2f57nLshhjYIyBMQbGGBhjYIyBMQbGGBhjYIyBMQbGGBhjYIyBMQbGGBhjYIyBMQbGGBhjYIyBMQbGGBhjYIyBMQbGGBhjYIyBMQbGGBhjYIyBMQbGGBhjYIyBMQbGGBhjYIyBMR8Dx80alcfdXuwAAAAASUVORK5CYII=">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: linear-gradient(145deg, #0b1a33 0%, #05142b 100%); color: #eef4ff; padding: 24px 20px 0; min-height: 100vh; }
+    .app-container { max-width: 1600px; margin: 0 auto; }
+    .hero { background: rgba(2, 20, 45, 0.65); backdrop-filter: blur(12px); border-radius: 2rem; padding: 1.5rem 2rem; margin-bottom: 2rem; border: 1px solid rgba(0, 180, 255, 0.3); box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5); }
+    .logo-area { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; justify-content: space-between; margin-bottom: 1rem; }
+    .web-logo { display: flex; align-items: center; gap: 12px; }
+    .web-logo img { width: 48px; height: 48px; border-radius: 16px; background: #0f2b4f; padding: 6px; box-shadow: 0 5px 12px rgba(0,0,0,0.3); }
+    .web-logo h1 { font-size: 1.9rem; font-weight: 800; background: linear-gradient(135deg, #fff, #3bb4ff); -webkit-background-clip: text; background-clip: text; color: transparent; letter-spacing: -0.5px; }
+    .typewriter-section { background: #021a33; border-radius: 60px; padding: 0.8rem 1.8rem; display: inline-flex; align-items: center; gap: 18px; flex-wrap: wrap; border-left: 4px solid #3a86ff; }
+    .typewriter { font-size: 1.3rem; font-weight: 600; font-family: monospace; color: #bbd9ff; min-width: 340px; }
+    .running-icons { display: flex; gap: 20px; overflow: hidden; white-space: nowrap; width: 220px; position: relative; }
+    .running-icons i { font-size: 1.5rem; color: #3bc0fc; animation: slideIcons 10s linear infinite; display: inline-block; }
+    @keyframes slideIcons { 0% { transform: translateX(80px); opacity: 0.2; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateX(-220px); opacity: 0; } }
+    .tournament-tabs { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 24px; justify-content: center; }
+    .tab-btn { background: rgba(12, 35, 65, 0.8); border: none; padding: 10px 20px; border-radius: 40px; font-weight: 600; font-size: 0.85rem; color: #c9e2ff; cursor: pointer; transition: all 0.2s ease; backdrop-filter: blur(4px); display: inline-flex; align-items: center; gap: 10px; }
+    .tab-btn img { width: 26px; height: 26px; object-fit: contain; filter: drop-shadow(0 1px 1px rgba(0,0,0,0.3)); }
+    .tab-btn.active { background: #1e6df2; color: white; box-shadow: 0 6px 14px rgba(30,109,242,0.4); }
+    .matches-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 24px; margin-top: 20px; }
+    .match-card { background: linear-gradient(135deg, #102a46, #0a1e34); border-radius: 28px; padding: 18px; transition: all 0.25s; border: 1px solid rgba(59, 134, 255, 0.3); box-shadow: 0 12px 20px -12px rgba(0,0,0,0.5); backdrop-filter: blur(2px); }
+    .match-card:hover { transform: translateY(-4px); border-color: #2f7ef5; box-shadow: 0 22px 28px -14px #0e2b4e; }
+    .match-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px dashed rgba(72, 144, 255, 0.4); padding-bottom: 8px; }
+    .league-logo { display: flex; align-items: center; gap: 8px; background: #071e33; padding: 4px 12px; border-radius: 40px; }
+    .league-logo img { width: 28px; height: 28px; object-fit: contain; background: rgba(255,255,255,0.1); border-radius: 12px; }
+    .league-logo span { font-size: 0.75rem; font-weight: 600; }
+    .live-badge { background: #e33535; padding: 4px 12px; border-radius: 30px; font-size: 0.7rem; font-weight: 800; letter-spacing: 1px; animation: pulseRed 1.2s infinite; box-shadow: 0 0 6px #ff4d4d; }
+    .live-badge.scheduled { background: #1f4d7a; animation: none; box-shadow: none; }
+    @keyframes pulseRed { 0% { opacity: 0.7; background: #c02525; } 100% { opacity: 1; background: #ff3a3a; } }
+    .teams { display: flex; justify-content: space-between; align-items: center; margin: 16px 0; gap: 12px; }
+    .team { display: flex; align-items: center; gap: 12px; background: #0b1e32; padding: 8px 18px; border-radius: 60px; flex: 1; }
+    .team img { width: 38px; height: 38px; object-fit: contain; background: white; border-radius: 50%; padding: 4px; }
+    .team-name { font-weight: 700; font-size: 0.9rem; }
+    .vs { font-weight: 800; background: #132e4a; padding: 4px 12px; border-radius: 30px; font-size: 0.8rem; color: #8bb9fe; }
+    .datetime-banner { background: #071d31; border-radius: 80px; padding: 8px 16px; display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 12px 0; font-size: 0.85rem; }
+    .match-status { background: #0b3762; padding: 4px 14px; border-radius: 50px; font-weight: 700; font-size: 0.8rem; color: #b7dcff; }
+    .score-area { font-size: 1.65rem; font-weight: 800; text-align: center; letter-spacing: 3px; background: #010f1e; border-radius: 30px; padding: 5px 0; margin: 6px 0; }
+    .match-link { text-align: right; margin-top: 10px; font-size: 0.7rem; }
+    .match-link a { color: #7aaef0; text-decoration: none; transition: 0.2s; }
+    .match-link a:hover { text-decoration: underline; color: white; }
+    footer { margin-top: 60px; text-align: center; padding: 28px 12px; border-top: 1px solid #21416b; font-size: 0.85rem; color: #96b8e3; }
+    .no-matches { text-align: center; padding: 60px; font-size: 1.2rem; background: #0f1f33; border-radius: 40px; }
+    @media (max-width: 700px) { .matches-grid { grid-template-columns: 1fr; } .team img { width: 28px; height: 28px; } .team-name { font-size: 0.8rem; } .tab-btn { font-size: 0.7rem; padding: 6px 12px; } .typewriter { font-size: 0.9rem; min-width: 260px; } }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <div class="hero">
+    <div class="logo-area">
+      <div class="web-logo"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABVUlEQVR4nO2aMW7CQBBF/ypSQqSIS1Ci5AJIUeYCSClI6SgRKC3cIaX5U2yxlmV7Zte7WxV8pU1iMT/77+zMQnFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcXF5aoFpmgZgGIYBgHEcP3vuOI4zx/f9T4ZhaJumGYYhDMOwAbjvewA+n88yDMMwDMMwDMMwDMMwDMMwDMMwDMMwDMMwDMMwDMMwDMMwjFdumqa+7/skSRLP8zwADMN4d+WmadIsy1IAU1UVVVUxjuO0ruuUZVlK0zQtyzKlaRqA67oeAC6Xy4+uP8uy9Hq9pvM8p/M8pyzL0jzPKQCSJEmjf7BYLJbtVkzFxcXFxcXFxcXFxcXFxcXFxcXFxcXFxcVlC/IPkOwpPZz1M30AAAAASUVORK5CYII=" alt="ExScore Logo"><h1>ExScore</h1></div>
+      <div class="typewriter-section"><div class="typewriter">📅 <span id="typewriter-text"></span></div><div class="running-icons"><i class="fas fa-futbol"></i> <i class="fas fa-trophy"></i> <i class="fas fa-clock"></i> <i class="fas fa-calendar-alt"></i> <i class="fas fa-fire"></i></div></div>
+    </div>
+  </div>
+  <div class="tournament-tabs" id="tabs-container"></div>
+  <div id="matches-container" class="matches-grid"></div>
+  <footer>Ⓒ 2026 ExScore - All Copyright Reversed.</footer>
+</div>
+
+<script>
+  // ======================= DANH SÁCH GIẢI ĐẤU (ĐÚNG LOGO & LINK LỊCH THEO YÊU CẦU) =======================
+  const tournaments = [
+    { id: "wc", name: "World Cup 2026", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgD0VaSxuvjNPGoayN1CamD0MKj9ceRWETp4GDqs3fLfvjiNFkZijjftGNVz2ylhXSemLpbXpHkOILx2GkWWK_ey3YkS-F4TY4rbVWaAa55Il2uwLfIAuLBxk__pIgVqiDCWNemy_ngVjle5fzmq4zfxHbtEfsussPpZEa8X1uHhKrji3NZ9ff96TTkLfU/s557/FIFA-2026-World-Cup-White-Logo-png-removebg-preview.png", scheduleLink: "https://xaydungchinhsach.chinhphu.vn/lich-tuong-thuat-truc-tiep-world-cup-2026-119260606115249926.htm" },
+    { id: "pl", name: "Premier League", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjQ0c9ZIvq7qn0DD5qR5bQzrmrfbayLINBiKct5wulH_NeCNwANl_Fb03XsdgbaeORPlIvn3OLi7sqUjb0qdYgt86Md7eI2sjq48qPuWxQ5QDDYBuPcfMHGao39sr9D_paW_UtxSdmUiy8rSKdiP7JpA4GM8_4QRwFwDyhoqTWXg895KP_sjWVy_POX1B8/s500/Premier-League-Logo-PNG-Iconic-English-Football-Emblem-Transparent-jpg-removebg-preview.png", scheduleLink: "https://www.24h.com.vn/bong-da/lich-thi-dau-bong-da-anh-c48a466567.html?livescore_tab_round=52mas07a9lsy28lwm6egrtqfo-930" },
+    { id: "laliga", name: "LaLiga", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiOL-fHG38HPfBjbxOMMcZN91RBNg-_NkWjq9AaQz9QV7kHnsf6tdbD-V_BQqltyNEvBbloAaIEzIbO_8E-SwpjSqJeQELhqxT694kaxJfIEp6HQhqBs0DKStCEjOVqwDS6GZ51PZmGymcJeaUnhnRSut4GG0JzTD3cgTBuOWajwVREiFegt8qq1s9HRl4/s960/LL_RGB_h_color.png", scheduleLink: "https://www.24h.com.vn/bong-da/lich-thi-dau-bong-da-tay-ban-nha-c48a468110.html" },
+    { id: "bundesliga", name: "Bundesliga", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjfYo9dlQ3KjwOW9Kqw30XTaRtL9v3XUCJGZxfdyraZytxBNbV6K_6o5WpEllaN5uAgNYmt0JnusLnx9NRqV4nED4gKB9noulRsnZ_K04iCU5NoWA8JOvCla6LT_j-kqZajm2BAZw5Qv2Vt325BVSExh0CvL0lbZE2B63bbVve3cQztDrIxeGxiycY7c0g/s300/Bundesliga_logo_(2017).png", scheduleLink: "https://www.24h.com.vn/bong-da-duc/lich-thi-dau-bong-da-duc-bundesliga-c152a467108.html" },
+    { id: "seriea", name: "Serie A", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjEydPqLeTrHvkhhaFICcW3boZ-tPJTu6Qhzqd1FbXRDmgO1MAlXXuMsAH3O-DCbmhcfkUruXi4rtZq63hmxWPnnuTkinIaV9GlcbbgaZTSpDyC8PB2xyAiS8yW8EUrvlvrh46D3GLLNZlcWkKKP0L_KQnO3xMuzfMN9tl-zmVf_AlHlyhMuZ1v7pd7dq4/s1640/960px-Serie_A_ENILIVE_logo.svg.png", scheduleLink: "https://www.24h.com.vn/bong-da/lich-thi-dau-bong-da-y-c48a394137.html" },
+    { id: "ligue1", name: "Ligue 1", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjKKdNrR3o5EglMuY-zkQOPIP5C6LpT2bsdXHeRH6QN6koHrQmfOC_vzOskAHJExm0omJEopu_hkq5cCsZVQn43NySgD9HcJ3nFtlJ7-LN01jzm14_vc4iiTcpk9D_2pr3IwNAcHdmF4rIyaME_JVmyZv4WxVObpl9kQ7MAS5GlW4-mdBrJVheSaiWUBfs/s2294/1280px-Logo_Ligue_1_McDonald's_2024.svg.png", scheduleLink: "https://www.24h.com.vn/bong-da/lich-thi-dau-bong-da-phap-c48a394560.html" },
+    { id: "mls", name: "MLS", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjhmFjox4gmERWgkeR6jcmMxa4lvIqLp6RQ49v0gwgG90nZzXjPPeJwCP0zCuPeFl_G3jPLoBmMOVJbYet-5-mw_lhFaMVGVO756arqnIaigKaK2dqhG29gdstjPcTYcy1R6y1-Jip1PtJgIvmo-4JbFgY6uxmGga8Zmj7fWFZBfkTKVZFqk1rTJCBOPyU/s529/Major_League_Soccer_logo.svg.png", scheduleLink: "https://vnexpress.net/the-thao/du-lieu-bong-da/giai-dau/mls/lich-thi-dau" },
+    { id: "rsl", name: "ROSHN Saudi League", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgl_TiT7wFSyjpVRhM6aKGJw3nPxjWyI9NIo7WyjRzN15muh_AK8TNH1OnvI6AsDGOed9C2G9GH3_TSbxZVGprSMy4CjY44Gkz9UgdZB6MepDRlWaXg6lfu-pNCp6m2zTacw70B08uZOLqtnA_boZyNioCxumt1KtxkgvNlv8RobPZA9FeX_GcXUQQD39c/s500/Roshn-Saudi-League-Logo-PNG-Football-League-Emblem-jpg-removebg-preview.png", scheduleLink: "https://baomoi.com/bong-da/lich-thi-dau-saudi-pro-league-giai-dau-28.epi" },
+    { id: "ucl", name: "UEFA Champions League", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhPjeUZlP71oJK3W-VVz_-C5j9UWU-v-YBkBD4EfQdSUXhWT3PuVWy4rrJkwV3VbOvjUZrdumbfYG8yP9GdBFMKXVQ859BHlBY6V88XGhUVDYZrE87Pk-NIxRbbujY1ZStNd930wIjtPTsmNaJk7azMY-66eR6im88kK5ELPwDngvr-GQvpAoR5A0azrNw/s500/UEFA_Champions_League.svg.png", scheduleLink: "https://www.24h.com.vn/bong-da/lich-thi-dau-cup-c1-champions-league-c48a465411.html" },
+    { id: "uel", name: "UEFA Europa League", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgCHA2KXB7-m_6YBeasZsRgqjoIyexvvuH_wtCitbNLs95Fu8GCJzzC0ivJxYZYuT5_AybzUtMD2Olm8-mwBITCZ1E1mt-BX7xlBtjmVeBkI_eGb85yU3eVoFVSDfAKX8zJ3pYzNuOIVtlO69WwgIy4bBT4MzTZDDGC9iAwqH6XZgv0S-mEFH_MSiCm3ao/s713/UEFA_Europa_League_logo_(2024_version).svg.png", scheduleLink: "https://www.24h.com.vn/bong-da/lich-thi-dau-europa-league-c48a467859.html" },
+    { id: "uecl", name: "UEFA Conference League", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjN5SUEJ7IrCW1PCKJ6N5x8bzoQ_KkX0bOEbeFCGk-7i_hDwKphShWid-zdYIUoIewt3YumiptFm9qV5clItjDt3wVj51_6Huc_fwBpkf4S-w9802uqXNZ4h9FjmENfW_noqnezpvzqkHaDJyU-7ZhOTwubHP0KTx8-O2MukuDKFMikqUmGJhnW0ycVbaE/s500/UEFA_Conference_League_full_logo_(2024_version).svg.png", scheduleLink: "https://bongda24h.vn/europa-conference-league/lich-thi-dau-117.html" },
+    { id: "afc2027", name: "AFC Asian Cup 2027", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhanyn4thCbJqmiaKsE2QGJGK3sQ_jD5MOyXLg4IW4HmBeutw03XwG9ApyeIbPprMYAI1Ge9zhzfSDfezc6Pfz9_wVBtMLOtCRXXuf_xkq5CM_CMZF14HyDeQIffmuQaKivYiguj54G2J-R_5YIrmNBF9Efw6jZwHq_vVWH9b-v0fSalwhju153l5y4Tpg/s422/2027_AFC_Asian_Cup_logo.png", scheduleLink: "https://m.thethao247.vn/asian-cup/406-lich-thi-dau-vck-asian-cup-2027-dt-viet-nam-ra-quan-ngay-nao-d419637.html" }
+  ];
+
+  // --- 1. LẤY LỊCH WORLD CUP 2026 TỪ BẢNG CỦA LINK CHINHPHU.VN ---
+  async function fetchWorldCupMatches() {
+      const proxyUrl = 'https://api.allorigins.win/get?url=';
+      const targetUrl = 'https://xaydungchinhsach.chinhphu.vn/lich-tuong-thuat-truc-tiep-world-cup-2026-119260606115249926.htm';
+      try {
+          const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
+          const data = await response.json();
+          const html = data.contents;
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          
+          let scheduleTable = null;
+          const tables = doc.querySelectorAll('table');
+          for (const table of tables) {
+              if (table.innerText.includes('Trận đấu') && table.innerText.includes('Bảng')) {
+                  scheduleTable = table;
+                  break;
+              }
+          }
+          if (!scheduleTable) return [];
+
+          const rows = scheduleTable.querySelectorAll('tr');
+          const matches = [];
+          for (let i = 1; i < rows.length; i++) {
+              const cols = rows[i].querySelectorAll('td');
+              if (cols.length >= 4) {
+                  let dateStr = cols[0]?.innerText.trim() || '';
+                  const timeStr = cols[1]?.innerText.trim() || '';
+                  const matchInfo = cols[2]?.innerText.trim() || '';
+                  dateStr = dateStr.split('*')[0].split('\n')[0].trim();
+                  const teams = matchInfo.split(' vs ');
+                  if (teams.length === 2) {
+                      const homeTeam = teams[0].trim();
+                      const awayTeam = teams[1].trim();
+                      let matchDate = null;
+                      try {
+                          const [day, month] = dateStr.split('/');
+                          const currentYear = 2026;
+                          const [hour, minute] = timeStr.split(':');
+                          matchDate = new Date(currentYear, parseInt(month)-1, parseInt(day), parseInt(hour), parseInt(minute));
+                      } catch(e) { console.warn("Lỗi parse ngày:", dateStr, timeStr); }
+                      
+                      matches.push({
+                          id: `wc_${i}_${Date.now()}`,
+                          tournamentId: "wc",
+                          tournamentName: "World Cup 2026",
+                          leagueLogo: tournaments.find(t=>t.id==="wc").logo,
+                          scheduleLink: tournaments.find(t=>t.id==="wc").scheduleLink,
+                          homeTeam: { name: homeTeam, logo: `https://flagcdn.com/w80/${getCountryCode(homeTeam)}.png` },
+                          awayTeam: { name: awayTeam, logo: `https://flagcdn.com/w80/${getCountryCode(awayTeam)}.png` },
+                          datetime: matchDate || new Date(),
+                          live: false,
+                          half: null,
+                          minute: null,
+                          score: "vs"
+                      });
+                  }
+              }
+          }
+          return matches;
+      } catch (error) {
+          console.error("Lỗi khi fetch World Cup:", error);
+          return [];
+      }
+  }
+
+  function getCountryCode(teamName) {
+      const codeMap = { "Mexico":"mx", "Nam Phi":"za", "Hàn Quốc":"kr", "CH Séc":"cz", "Canada":"ca", "Bosnia & Herzegovina":"ba", "Qatar":"qa", "Thụy Sĩ":"ch", "Brazil":"br", "Morocco":"ma", "Scotland":"gb-sct", "Haiti":"ht", "Mỹ":"us", "Australia":"au", "Paraguay":"py", "Thổ Nhĩ Kỳ":"tr", "Đức":"de", "Curaçao":"cw", "Bờ Biển Ngà":"ci", "Ecuador":"ec", "Hà Lan":"nl", "Nhật Bản":"jp", "Tunisia":"tn", "Thụy Điển":"se", "Bỉ":"be", "Ai Cập":"eg", "Iran":"ir", "New Zealand":"nz", "Tây Ban Nha":"es", "Cape Verde":"cv", "Saudi Arabia":"sa", "Uruguay":"uy", "Pháp":"fr", "Senegal":"sn", "Iraq":"iq", "Na Uy":"no", "Argentina":"ar", "Algeria":"dz", "Áo":"at", "Jordan":"jo", "Bồ Đào Nha":"pt", "CHDC Congo":"cd", "Uzbekistan":"uz", "Colombia":"co", "Anh":"gb-eng", "Croatia":"hr", "Ghana":"gh", "Panama":"pa" };
+      return codeMap[teamName] || "unknown";
+  }
+
+  // --- 2. DỮ LIỆU MẪU CHO CÁC GIẢI CÒN LẠI (ĐẸP, CÓ LIVE, CÓ LOGO ĐỘI) ---
+  function generateMockMatches() {
+      const teamsPool = [
+          { name: "Manchester City", logo: "https://cdn-icons-png.flaticon.com/512/207/207011.png" }, { name: "Real Madrid", logo: "https://cdn-icons-png.flaticon.com/512/207/207006.png" },
+          { name: "Bayern Munich", logo: "https://cdn-icons-png.flaticon.com/512/207/207008.png" }, { name: "Juventus", logo: "https://cdn-icons-png.flaticon.com/512/207/207018.png" },
+          { name: "PSG", logo: "https://cdn-icons-png.flaticon.com/512/207/207020.png" }, { name: "Al Hilal", logo: "https://cdn-icons-png.flaticon.com/512/207/207014.png" },
+          { name: "LAFC", logo: "https://cdn-icons-png.flaticon.com/512/207/207013.png" }, { name: "Việt Nam", logo: "https://cdn-icons-png.flaticon.com/512/207/207009.png" },
+          { name: "Thái Lan", logo: "https://cdn-icons-png.flaticon.com/512/207/207010.png" }, { name: "Liverpool", logo: "https://cdn-icons-png.flaticon.com/512/207/207007.png" }
+      ];
+      const now = new Date();
+      const matches = [];
+      const excludeIds = ["wc"]; // World cup đã có real data
+      tournaments.forEach(t => {
+          if (excludeIds.includes(t.id)) return;
+          for (let i = 0; i < 2; i++) {
+              const isLive = (i === 0 && t.id !== "afc2027");
+              const matchTime = isLive ? new Date() : new Date(now.getTime() + (i+1) * 86400000);
+              const homeIdx = (t.id.length + i) % teamsPool.length;
+              const awayIdx = (homeIdx + 2) % teamsPool.length;
+              let halfText = "", minuteText = "";
+              if (isLive) { const min = Math.floor(Math.random() * 88) + 2; minuteText = `${min}'`; halfText = min < 45 ? "Hiệp 1" : "Hiệp 2"; }
+              matches.push({
+                  id: `${t.id}_mock_${i}`,
+                  tournamentId: t.id,
+                  tournamentName: t.name,
+                  leagueLogo: t.logo,
+                  scheduleLink: t.scheduleLink,
+                  homeTeam: teamsPool[homeIdx],
+                  awayTeam: teamsPool[awayIdx],
+                  datetime: matchTime,
+                  live: isLive,
+                  half: halfText,
+                  minute: minuteText,
+                  score: isLive ? `${Math.floor(Math.random() * 3)}-${Math.floor(Math.random() * 2)}` : "vs"
+              });
+          }
+      });
+      // Thêm trận live đặc biệt cho các giải lớn
+      matches.push({ id:"ucl_live_special", tournamentId:"ucl", tournamentName:"UEFA Champions League", leagueLogo: tournaments.find(t=>t.id==="ucl").logo, scheduleLink: tournaments.find(t=>t.id==="ucl").scheduleLink, homeTeam:{name:"Real Madrid", logo:"https://cdn-icons-png.flaticon.com/512/207/207011.png"}, awayTeam:{name:"Bayern Munich", logo:"https://cdn-icons-png.flaticon.com/512/207/207008.png"}, datetime:new Date(), live:true, half:"Hiệp 2", minute:"73'", score:"2-1"});
+      matches.push({ id:"pl_live_special", tournamentId:"pl", tournamentName:"Premier League", leagueLogo: tournaments.find(t=>t.id==="pl").logo, scheduleLink: tournaments.find(t=>t.id==="pl").scheduleLink, homeTeam:{name:"Liverpool", logo:"https://cdn-icons-png.flaticon.com/512/207/207007.png"}, awayTeam:{name:"Man City", logo:"https://cdn-icons-png.flaticon.com/512/207/207017.png"}, datetime:new Date(), live:true, half:"Hiệp 1", minute:"28'", score:"0-0"});
+      return matches;
+  }
+
+  // --- TẤT CẢ DỮ LIỆU (KẾT HỢP) ---
+  let allMatches = [];
+
+  async function loadAllData() {
+      const wcMatches = await fetchWorldCupMatches();
+      const mockMatches = generateMockMatches();
+      // Thêm 1 trận mẫu cho AFC Cup 2027
+      const afcMock = { id: "afc_mock", tournamentId: "afc2027", tournamentName: "AFC Asian Cup 2027", leagueLogo: tournaments.find(t=>t.id==="afc2027").logo, scheduleLink: tournaments.find(t=>t.id==="afc2027").scheduleLink, homeTeam: { name: "Việt Nam", logo: "https://cdn-icons-png.flaticon.com/512/207/207009.png" }, awayTeam: { name: "Hàn Quốc", logo: "https://cdn-icons-png.flaticon.com/512/207/207011.png" }, datetime: new Date(2027, 0, 15, 19, 30), live: false, half: null, minute: null, score: "vs" };
+      allMatches = [...wcMatches, ...mockMatches, afcMock];
+      renderTabs();
+      renderMatches();
+  }
+
+  // --- TYPEWRITER CHẠY CHỮ "Tại đây có lịch ..." (ĐÚNG YÊU CẦU) ---
+  const phrases = [
+      "Tại đây có lịch World Cup 2026",
+      "Tại đây có lịch Premier League",
+      "Tại đây có lịch LaLiga",
+      "Tại đây có lịch Bundesliga",
+      "Tại đây có lịch Serie A",
+      "Tại đây có lịch Ligue 1",
+      "Tại đây có lịch MLS",
+      "Tại đây có lịch ROSHN Saudi League",
+      "Tại đây có lịch UEFA Champions League",
+      "Tại đây có lịch UEFA Europa League",
+      "Tại đây có lịch UEFA Conference League",
+      "Tại đây có lịch AFC Asian Cup 2027"
+  ];
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  const typewriterSpan = document.getElementById("typewriter-text");
+
+  function typeWriterEffect() {
+      const currentPhrase = phrases[phraseIndex];
+      if (isDeleting) {
+          typewriterSpan.innerText = currentPhrase.substring(0, charIndex - 1);
+          charIndex--;
+          if (charIndex === 0) {
+              isDeleting = false;
+              phraseIndex = (phraseIndex + 1) % phrases.length;
+          }
+      } else {
+          typewriterSpan.innerText = currentPhrase.substring(0, charIndex + 1);
+          charIndex++;
+          if (charIndex === currentPhrase.length) {
+              isDeleting = true;
+              setTimeout(() => {}, 1500);
+          }
+      }
+      setTimeout(typeWriterEffect, isDeleting ? 60 : 120);
+  }
+  typeWriterEffect();
+
+  // --- UI RENDER (TABS + MATCH CARDS) ---
+  const tabsContainer = document.getElementById("tabs-container");
+  let activeTab = "all";
+  function renderTabs() {
+      let html = `<button class="tab-btn active" data-tab="all">🏆 Tất cả giải</button>`;
+      tournaments.forEach(t => { html += `<button class="tab-btn" data-tab="${t.id}"><img src="${t.logo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/555/555600.png'"> ${t.name}</button>`; });
+      tabsContainer.innerHTML = html;
+      document.querySelectorAll(".tab-btn").forEach(btn => { btn.addEventListener("click", () => { document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active")); btn.classList.add("active"); activeTab = btn.getAttribute("data-tab"); renderMatches(); }); });
+  }
+
+  function renderMatches() {
+      const container = document.getElementById("matches-container");
+      let filtered = activeTab === "all" ? allMatches : allMatches.filter(m => m.tournamentId === activeTab);
+      if (filtered.length === 0) { container.innerHTML = `<div class="no-matches">⚽ Không có trận đấu nào cho giải này ⚽</div>`; return; }
+      const html = filtered.map(match => {
+          const isLive = match.live;
+          const dateObj = match.datetime;
+          const dateStr = dateObj.toLocaleDateString('vi-VN', {day:'2-digit', month:'2-digit', year:'numeric'});
+          const timeStr = dateObj.toLocaleTimeString('vi-VN', {hour:'2-digit', minute:'2-digit'});
+          let bannerStatus = isLive && match.half && match.minute ? `${match.half} • ${match.minute}` : (isLive ? "Đang thi đấu" : `${dateStr} | ${timeStr}`);
+          const liveHtml = isLive ? `<div class="live-badge">🔴 LIVE</div>` : `<div class="live-badge scheduled">📅 SẮP ĐÁ</div>`;
+          const scoreHtml = isLive ? `<div class="score-area">${match.score}</div>` : `<div class="score-area" style="opacity:0.7;">⚽ vs ⚽</div>`;
+          return `<div class="match-card"><div class="match-header"><div class="league-logo"><img src="${match.leagueLogo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/555/555600.png'"><span>${match.tournamentName}</span></div>${liveHtml}</div><div class="teams"><div class="team"><img src="${match.homeTeam.logo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/207/207011.png'"><span class="team-name">${match.homeTeam.name}</span></div><div class="vs">VS</div><div class="team"><img src="${match.awayTeam.logo}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/207/207008.png'"><span class="team-name">${match.awayTeam.name}</span></div></div><div class="datetime-banner"><div class="date-time"><i class="far fa-calendar-alt"></i> ${dateStr} &nbsp; <i class="far fa-clock"></i> ${timeStr}</div><div class="match-status"><i class="fas fa-${isLive ? 'futbol' : 'hourglass-half'}"></i> ${bannerStatus}</div></div>${scoreHtml}<div class="match-link"><a href="${match.scheduleLink}" target="_blank">📅 Xem lịch chi tiết <i class="fas fa-external-link-alt"></i></a></div></div>`;
+      }).join("");
+      container.innerHTML = html;
+  }
+  
+  function updateRealtimeSimulation() {
+      allMatches = allMatches.map(m => { if(m.live && m.minute) { let currentMin = parseInt((m.minute || "0'").replace("'","")); if(!isNaN(currentMin) && currentMin < 89) { currentMin += 1; return { ...m, minute: `${currentMin}'`, half: currentMin < 45 ? "Hiệp 1" : "Hiệp 2" }; } } return m; });
+      renderMatches();
+  }
+  setInterval(updateRealtimeSimulation, 38000);
+  
+  loadAllData();
+</script>
+</body>
+  </html>
