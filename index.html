@@ -3,1117 +3,569 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ExScore - Lịch bóng đá trực tiếp</title>
+<title>ExScore — Lịch Thi Đấu Bóng Đá 2026</title>
+<meta name="description" content="ExScore — Lịch thi đấu World Cup 2026, Premier League, LaLiga, Bundesliga, Serie A, Ligue 1, MLS, ROSHN Saudi League, UEFA Champions League, Europa League, Conference League và AFC Asian Cup 2027.">
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logo-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/logo-192.png">
+<link rel="apple-touch-icon" href="assets/logo-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+:root{
+  --navy-950:#040A16; --navy-900:#08122A; --navy-850:#0B1A38; --navy-800:#102447;
+  --navy-750:#142C57; --navy-700:#17336B; --navy-line:rgba(143,184,255,.14);
+  --blue-700:#143CA8; --blue-600:#1E4FD6; --blue-500:#3D7CFF; --blue-400:#6398FF;
+  --blue-300:#9BC0FF; --blue-100:#DCEBFF;
+  --ice:#EAF2FF; --muted:#8AA3D1; --muted-2:#5C75A3;
+  --live:#FF3344; --live-soft:#FF6B7A; --live-glow:rgba(255,51,68,.45);
+  --gold:#FFC857; --green:#34D399;
+  --r-lg:18px; --r-md:14px; --r-sm:8px;
+  --shadow-card:0 10px 26px -14px rgba(2,8,23,.7);
+  --ff-display:'Anton', sans-serif; --ff-body:'Inter', sans-serif; --ff-mono:'JetBrains Mono', monospace;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--ff-body);
+  background-color:var(--navy-950);
+  background-image:
+    radial-gradient(ellipse 900px 500px at 18% -8%, rgba(61,124,255,.20), transparent 60%),
+    radial-gradient(ellipse 700px 500px at 100% 6%, rgba(255,200,87,.06), transparent 55%),
+    radial-gradient(ellipse 800px 600px at 50% 100%, rgba(30,79,214,.12), transparent 60%);
+  color:var(--ice); -webkit-font-smoothing:antialiased; min-height:100vh;
+}
+img{max-width:100%; display:block;}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer; background:none; border:none; color:inherit;}
+:focus-visible{outline:2px solid var(--blue-400); outline-offset:2px; border-radius:4px;}
+.wrap{max-width:1180px; margin:0 auto; padding:0 16px;}
 
-  :root {
-    --green-dark: #0a3d1f;
-    --green-mid:  #0f6b34;
-    --green-light:#1abc5e;
-    --gold:       #f0c042;
-    --gold-dark:  #c8971d;
-    --white:      #f5f7f2;
-    --gray-1:     #e8ede3;
-    --gray-2:     #b8c5b0;
-    --gray-3:     #6b7d63;
-    --text-dark:  #0d1f0a;
-    --red:        #e63946;
-    --blue:       #1d6fa4;
-    --shadow:     0 4px 20px rgba(0,0,0,.25);
-  }
+/* ===== HEADER ===== */
+.site-header{
+  position:sticky; top:0; z-index:60;
+  background:rgba(8,18,42,.85); backdrop-filter:blur(14px) saturate(140%);
+  border-bottom:1px solid var(--navy-line);
+}
+.header-inner{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 0;}
+.brand{display:flex; align-items:center; gap:10px; min-width:0;}
+.brand-logo{width:38px; height:38px; border-radius:50%; flex-shrink:0;
+  box-shadow:0 0 0 1px rgba(143,184,255,.25), 0 6px 14px -6px rgba(61,124,255,.65);}
+.brand-text{display:flex; flex-direction:column; line-height:1.1; min-width:0;}
+.brand-name{font-family:var(--ff-display); font-weight:400; letter-spacing:.03em; font-size:19px; color:var(--ice); white-space:nowrap;}
+.brand-name span{color:var(--blue-400);}
+.brand-tag{font-size:9.5px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; white-space:nowrap;}
+.header-right{display:flex; align-items:center; gap:6px; flex-shrink:0;}
+.clock-chip{
+  display:flex; flex-direction:column; align-items:center; gap:1px;
+  background:linear-gradient(180deg, var(--navy-800), var(--navy-850));
+  border:1px solid var(--navy-line); border-radius:999px;
+  padding:6px 14px; font-family:var(--ff-mono);
+}
+.clock-chip .row1{display:flex; align-items:center; gap:6px;}
+.clock-chip .dot{width:6px; height:6px; border-radius:50%; background:var(--green); flex-shrink:0;
+  animation:dotpulse 2.4s ease-out infinite;}
+.clock-chip #clockTime{font-size:13px; font-weight:700; color:var(--ice); letter-spacing:.03em;}
+.clock-chip #clockDate{font-size:9px; color:var(--muted); letter-spacing:.04em;}
+@keyframes dotpulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.55);}70%{box-shadow:0 0 0 6px rgba(52,211,153,0);}100%{box-shadow:0 0 0 0 rgba(52,211,153,0);}}
+.icon-btn{
+  width:34px; height:34px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:15px;
+  background:var(--navy-800); border:1px solid var(--navy-line); color:var(--blue-300);
+  transition:.15s ease;
+}
+.icon-btn:hover{background:var(--blue-600); color:#fff; border-color:var(--blue-500); transform:translateY(-1px);}
+.icon-btn.spinning{animation:spin .6s linear;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* ===== TICKER ===== */
+.ticker{position:relative; background:var(--navy-900); border-bottom:1px solid var(--navy-line); overflow:hidden; padding:7px 0;}
+.ticker::before,.ticker::after{content:""; position:absolute; top:0; bottom:0; width:48px; z-index:2; pointer-events:none;}
+.ticker::before{left:0; background:linear-gradient(90deg, var(--navy-900), transparent);}
+.ticker::after{right:0; background:linear-gradient(270deg, var(--navy-900), transparent);}
+.ticker-track{display:flex; align-items:center; gap:26px; width:max-content; animation:ticker-scroll 42s linear infinite;}
+.ticker:hover .ticker-track{animation-play-state:paused;}
+.ticker-item{display:flex; align-items:center; gap:8px; font-family:var(--ff-mono); font-size:11.5px; letter-spacing:.04em; color:var(--blue-300); white-space:nowrap;}
+.ticker-item img{width:18px; height:18px; border-radius:50%; flex-shrink:0;}
+.ticker-item b{color:var(--ice); font-weight:600; font-family:var(--ff-body);}
+.ticker-sep{color:var(--muted-2); font-size:10px;}
+@keyframes ticker-scroll{from{transform:translateX(0);}to{transform:translateX(-50%);}}
 
-  body {
-    font-family: 'Inter', sans-serif;
-    background: var(--text-dark);
-    color: var(--white);
-    min-height: 100vh;
-  }
+/* ===== TYPEWRITER STRIP ===== */
+.type-strip{background:var(--navy-850); border-bottom:1px solid var(--navy-line); padding:8px 0;}
+.type-strip .wrap{display:flex; align-items:center; justify-content:center; gap:8px; font-size:12px; color:var(--blue-300); min-height:16px;}
+.type-strip .pin{flex-shrink:0;}
+.caret{display:inline-block; width:7px; height:1em; background:var(--blue-400); margin-left:1px; vertical-align:-2px; animation:caret-blink 1s step-end infinite;}
+@keyframes caret-blink{50%{opacity:0;}}
 
-  /* ── HERO ── */
-  .hero {
-    background: linear-gradient(135deg, #0a3d1f 0%, #0f6b34 55%, #1abc5e 100%);
-    padding: 56px 24px 48px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .hero::before {
-    content: '⚽';
-    position: absolute;
-    font-size: 280px;
-    opacity: .05;
-    top: -40px; right: -40px;
-    line-height: 1;
-    pointer-events: none;
-  }
-  .hero h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.6rem);
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #fff;
-    text-shadow: 0 2px 12px rgba(0,0,0,.4);
-  }
-  .hero h1 span { color: var(--gold); }
-  .hero p {
-    margin-top: 12px;
-    color: rgba(255,255,255,.75);
-    font-size: 1rem;
-    letter-spacing: .5px;
-  }
+/* ===== FILTERS ===== */
+.filters{position:sticky; top:59px; z-index:50; background:rgba(4,10,22,.94); backdrop-filter:blur(10px); border-bottom:1px solid var(--navy-line); padding:10px 0;}
+.filters-track{display:flex; flex-wrap:wrap; gap:7px; justify-content:center;}
+.filter-pill{
+  display:flex; align-items:center; gap:6px; background:var(--navy-800); border:1px solid var(--navy-line);
+  color:var(--muted); font-size:11.5px; font-weight:600; padding:7px 12px; border-radius:999px;
+  transition:.15s ease; white-space:nowrap;
+}
+.filter-pill img{width:16px; height:16px; border-radius:50%;}
+.filter-pill:hover{color:var(--ice); border-color:var(--blue-500);}
+.filter-pill.active{background:linear-gradient(135deg, var(--blue-600), var(--blue-700)); border-color:var(--blue-500); color:#fff;
+  box-shadow:0 6px 16px -8px rgba(30,79,214,.8);}
 
-  /* ── TABS ── */
-  .tabs {
-    display: flex;
-    justify-content: center;
-    gap: 0;
-    background: #081a0f;
-    border-bottom: 3px solid var(--green-mid);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .tab-btn {
-    font-family: 'Oswald', sans-serif;
-    font-size: .95rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    padding: 16px 22px;
-    background: transparent;
-    color: var(--gray-2);
-    border: none;
-    cursor: pointer;
-    transition: all .25s;
-    white-space: nowrap;
-    border-bottom: 3px solid transparent;
-    margin-bottom: -3px;
-  }
-  .tab-btn:hover { color: var(--white); }
-  .tab-btn.active {
-    color: var(--gold);
-    border-bottom-color: var(--gold);
-    background: rgba(240,192,66,.06);
-  }
+/* ===== MAIN GRID ===== */
+main{padding:22px 0 30px;}
+.match-grid{display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;}
+@media (max-width:300px){.match-grid{grid-template-columns:1fr;}}
 
-  /* ── PANELS ── */
-  .panel { display: none; padding: 32px 16px 64px; max-width: 1100px; margin: 0 auto; }
-  .panel.active { display: block; }
+.match-card{
+  display:flex; flex-direction:column; gap:9px;
+  background:linear-gradient(165deg, var(--navy-800), var(--navy-850));
+  border:1px solid var(--navy-line); border-radius:var(--r-md);
+  padding:12px; box-shadow:var(--shadow-card);
+  transition:transform .15s ease, border-color .15s ease;
+}
+.match-card:hover{transform:translateY(-2px); border-color:var(--blue-500);}
+.match-card.status-live{border-color:rgba(255,51,68,.42); border-left:3px solid var(--live);
+  box-shadow:var(--shadow-card), 0 0 22px -12px var(--live-glow); animation:live-card-pulse 2.6s ease-in-out infinite;}
+@keyframes live-card-pulse{0%,100%{box-shadow:var(--shadow-card), 0 0 16px -12px var(--live-glow);}50%{box-shadow:var(--shadow-card), 0 0 28px -8px var(--live-glow);}}
+.match-card.status-ft{opacity:.8;}
 
-  /* ── SECTION HEADER ── */
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 28px;
-  }
-  .section-icon {
-    width: 48px; height: 48px;
-    background: var(--green-mid);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem;
-    flex-shrink: 0;
-    box-shadow: 0 0 0 3px rgba(26,188,94,.25);
-  }
-  .section-header h2 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.6rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-  .section-header p { color: var(--gray-2); font-size: .85rem; margin-top: 2px; }
+.card-top{display:flex; align-items:center; justify-content:space-between; gap:6px;}
+.card-comp{display:flex; align-items:center; gap:6px; min-width:0; font-size:10.5px; color:var(--muted); font-weight:600; letter-spacing:.02em; overflow:hidden;}
+.card-comp img{width:18px; height:18px; border-radius:50%; flex-shrink:0;}
+.card-comp span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
 
-  /* ── INFO CARDS ── */
-  .info-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 14px;
-    margin-bottom: 32px;
-  }
-  .info-card {
-    background: rgba(15,107,52,.2);
-    border: 1px solid rgba(26,188,94,.2);
-    border-radius: 10px;
-    padding: 18px 20px;
-    text-align: center;
-  }
-  .info-card .val {
-    font-family: 'Oswald', sans-serif;
-    font-size: 2rem;
-    color: var(--gold);
-    font-weight: 700;
-  }
-  .info-card .lbl {
-    font-size: .78rem;
-    color: var(--gray-2);
-    margin-top: 4px;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-  }
+.status-tag{display:inline-flex; align-items:center; gap:4px; font-family:var(--ff-mono); font-weight:700; font-size:9.5px; letter-spacing:.06em; padding:3px 8px; border-radius:999px; flex-shrink:0; white-space:nowrap;}
+.status-tag.live{background:var(--live); color:#fff; box-shadow:0 4px 12px -4px var(--live-glow);}
+.status-tag.live .live-blip{width:5px; height:5px; border-radius:50%; background:#fff; animation:live-blink 1.1s ease-in-out infinite;}
+@keyframes live-blink{0%,100%{opacity:1; transform:scale(1);}50%{opacity:.3; transform:scale(.7);}}
+.status-tag.upcoming{background:rgba(61,124,255,.16); color:var(--blue-300); border:1px solid rgba(61,124,255,.35);}
+.status-tag.ft{background:rgba(143,163,209,.12); color:var(--muted); border:1px solid var(--navy-line);}
 
-  /* ── GROUP GRID ── */
-  .groups-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 18px;
-    margin-bottom: 36px;
-  }
-  .group-card {
-    background: #0d2617;
-    border: 1px solid rgba(26,188,94,.18);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .group-card-header {
-    background: var(--green-mid);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .group-label {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 1px;
-  }
-  .group-badge {
-    font-size: .72rem;
-    background: rgba(255,255,255,.18);
-    color: #fff;
-    padding: 2px 8px;
-    border-radius: 20px;
-    letter-spacing: .3px;
-  }
-  .group-card-body { padding: 12px 16px; }
-  .team-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(255,255,255,.06);
-    font-size: .88rem;
-  }
-  .team-row:last-child { border-bottom: none; }
-  .flag { font-size: 1.2rem; }
-  .team-name { flex: 1; color: var(--white); font-weight: 500; }
-  .team-name.host {
-    color: var(--gold);
-    font-weight: 600;
-  }
-  .tag {
-    font-size: .68rem;
-    padding: 2px 7px;
-    border-radius: 12px;
-    font-weight: 600;
-    letter-spacing: .3px;
-  }
-  .tag.host-tag { background: var(--gold); color: #000; }
-  .tag.death-tag { background: var(--red); color: #fff; }
+.card-teams{display:flex; align-items:center; justify-content:space-between; gap:6px;}
+.team-block{display:flex; align-items:center; gap:7px; min-width:0; flex:1;}
+.team-badge{flex-shrink:0; width:26px; height:26px; border-radius:50%; object-fit:cover; background:var(--navy-700); box-shadow:0 0 0 1px rgba(143,184,255,.18);}
+.team-badge.club{display:flex; align-items:center; justify-content:center; font-family:var(--ff-mono); font-weight:700; font-size:8.5px; letter-spacing:.01em; text-shadow:0 1px 2px rgba(0,0,0,.45);}
+.team-name{min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:clamp(11px,2.4vw,13.5px); font-weight:600; color:var(--ice);}
+.vs-label{flex-shrink:0; font-size:9.5px; color:var(--muted-2); letter-spacing:.08em; padding:0 2px;}
 
-  /* ── SCHEDULE TABLE ── */
-  .schedule-section { margin-bottom: 40px; }
-  .schedule-section h3 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.1rem;
-    color: var(--gold);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 10px 0 8px;
-    border-bottom: 2px solid rgba(240,192,66,.3);
-    margin-bottom: 16px;
-  }
+.card-date{display:flex; align-items:center; justify-content:space-between; font-family:var(--ff-mono); font-size:10.5px; color:var(--muted);}
+.card-date .ico{margin-right:4px;}
 
-  .match-list { display: flex; flex-direction: column; gap: 8px; }
-  .match-card {
-    background: #0d2617;
-    border: 1px solid rgba(26,188,94,.14);
-    border-radius: 10px;
-    padding: 12px 16px;
-    display: grid;
-    grid-template-columns: 110px 1fr auto 1fr 100px;
-    align-items: center;
-    gap: 8px;
-    transition: border-color .2s, background .2s;
-  }
-  .match-card:hover {
-    border-color: rgba(26,188,94,.4);
-    background: rgba(15,107,52,.25);
-  }
-  .match-card.today {
-    border-color: var(--gold);
-    background: rgba(240,192,66,.07);
-  }
-  .match-card.past { opacity: .55; }
+.highlight-pill{display:flex; align-items:center; justify-content:center; gap:5px; font-family:var(--ff-mono); font-size:11px; font-weight:700; letter-spacing:.04em; padding:5px 8px; border-radius:999px; text-align:center;}
+.highlight-pill.live{background:rgba(255,51,68,.14); border:1px solid rgba(255,51,68,.35); color:#fff;}
+.highlight-pill.upcoming{background:rgba(61,124,255,.10); border:1px solid rgba(61,124,255,.28); color:var(--blue-300);}
+.highlight-pill.ft{background:rgba(143,163,209,.08); border:1px solid var(--navy-line); color:var(--muted);}
 
-  .match-date { font-size: .78rem; color: var(--gray-2); }
-  .match-date strong { display: block; font-size: .9rem; color: var(--gold); font-weight: 600; }
-  .match-date span { font-size: .72rem; }
+.score-pill{display:flex; align-items:center; justify-content:center; gap:10px; background:var(--navy-950); border:1px solid var(--navy-line); border-radius:var(--r-sm); padding:8px 10px;}
+.score-num{font-family:var(--ff-mono); font-weight:700; font-size:19px; color:var(--ice);}
+.score-dash{font-family:var(--ff-mono); color:var(--muted-2); font-size:15px;}
+.score-pill.placeholder{gap:8px;}
+.score-pill.placeholder .ball{font-size:15px; opacity:.55; filter:grayscale(1);}
+.score-pill.placeholder .vs-text{font-family:var(--ff-mono); font-size:11px; letter-spacing:.1em; color:var(--muted); text-transform:uppercase;}
 
-  .team-a { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
-  .team-b { text-align: left; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
-  .team-a .tn, .team-b .tn { font-size: .88rem; font-weight: 500; color: var(--white); }
-  .team-a .fl, .team-b .fl { font-size: 1.1rem; }
+.detail-link{display:flex; align-items:center; justify-content:flex-end; gap:4px; font-size:10.5px; color:var(--muted-2); align-self:flex-end; padding:2px 0; transition:.15s ease;}
+.detail-link:hover{color:var(--blue-300);}
+.detail-link .arrow{font-size:10px;}
 
-  .score-box {
-    text-align: center;
-    background: #081a0f;
-    border-radius: 8px;
-    padding: 6px 14px;
-    min-width: 70px;
-  }
-  .score-box .vs { font-size: .8rem; color: var(--gray-2); font-weight: 500; letter-spacing: 2px; }
-  .score-box .sc { font-family: 'Oswald', sans-serif; font-size: 1.2rem; color: #fff; font-weight: 700; }
-  .score-box .sc.live { color: var(--green-light); }
-  .score-box .sc.ft { color: var(--white); }
+/* ===== FOOTER ===== */
+.site-footer{border-top:1px solid var(--navy-line); background:var(--navy-900); padding:30px 0; margin-top:10px;}
+.footer-inner{display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center;}
+.footer-brand{display:flex; align-items:center; gap:9px;}
+.footer-brand img{width:30px; height:30px; border-radius:50%;}
+.footer-brand span{font-family:var(--ff-display); font-size:16px; letter-spacing:.03em;}
+.footer-links{display:flex; gap:16px; flex-wrap:wrap; justify-content:center; font-size:12px; color:var(--muted);}
+.footer-links a:hover{color:var(--blue-300);}
+.footer-copy{font-size:11.5px; color:var(--muted-2); letter-spacing:.02em;}
+.footer-note{font-size:10.5px; color:var(--muted-2); max-width:480px; line-height:1.6;}
 
-  .match-venue { font-size: .72rem; color: var(--gray-3); text-align: right; }
-  .match-venue strong { display: block; color: var(--gray-2); font-size: .78rem; font-weight: 500; }
+/* ===== TOAST ===== */
+.toast{position:fixed; left:50%; bottom:22px; transform:translateX(-50%) translateY(10px); background:var(--navy-800); border:1px solid var(--blue-500); color:var(--ice); font-size:12.5px; padding:10px 18px; border-radius:999px; box-shadow:0 12px 30px -10px rgba(2,8,23,.8); z-index:200; opacity:0; transition:opacity .25s ease, transform .25s ease; pointer-events:none; white-space:nowrap;}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
 
-  /* ── AFF CUP / GIAO HỮU cards ── */
-  .friendly-card {
-    background: #0d2617;
-    border: 1px solid rgba(26,188,94,.18);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 14px;
-  }
-  .friendly-card h4 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1rem;
-    color: var(--gold);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 14px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(240,192,66,.2);
-  }
-
-  /* ── ASIAN CUP BẢNG ── */
-  .ac-groups { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
-  .ac-group {
-    background: #0d2617;
-    border: 1px solid rgba(26,188,94,.18);
-    border-radius: 12px;
-    overflow: hidden;
-  }
-  .ac-group-hdr {
-    padding: 10px 16px;
-    background: linear-gradient(90deg, #0f6b34, #1abc5e44);
-    display: flex; align-items: center; gap: 10px;
-  }
-  .ac-group-hdr .gl {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 1px;
-  }
-  .ac-group-hdr .gn { font-size: .8rem; color: rgba(255,255,255,.65); }
-  .death-hdr { background: linear-gradient(90deg, #8b0000, #e63946aa) !important; }
-  .ac-group-body { padding: 10px 14px; }
-
-  /* ── KNOCKOUT BRACKET ── */
-  .knockout-info {
-    background: rgba(15,107,52,.15);
-    border: 1px dashed rgba(26,188,94,.3);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    margin-top: 20px;
-  }
-  .knockout-info h3 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 1.2rem;
-    color: var(--gold);
-    margin-bottom: 14px;
-    letter-spacing: 1px;
-  }
-  .ko-timeline {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0;
-  }
-  .ko-step {
-    text-align: center;
-    padding: 10px 14px;
-    position: relative;
-  }
-  .ko-step:not(:last-child)::after {
-    content: '→';
-    position: absolute;
-    right: -8px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--green-light);
-    font-size: 1rem;
-  }
-  .ko-step .kd { font-size: .72rem; color: var(--gray-3); }
-  .ko-step .kr { font-family: 'Oswald', sans-serif; font-size: .95rem; color: var(--white); font-weight: 600; }
-  .ko-step .kt { font-size: .72rem; color: var(--gray-2); margin-top: 2px; }
-
-  /* ── FOOTER ── */
-  .page-footer {
-    text-align: center;
-    padding: 24px;
-    border-top: 1px solid rgba(26,188,94,.15);
-    font-size: .78rem;
-    color: var(--gray-3);
-  }
-
-  /* ── SCROLLBAR ── */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: #0a1a0e; }
-  ::-webkit-scrollbar-thumb { background: var(--green-mid); border-radius: 3px; }
-
-  /* ── MOBILE ── */
-  @media (max-width: 600px) {
-    .match-card {
-      grid-template-columns: 80px 1fr auto 1fr;
-      grid-template-rows: auto auto;
-    }
-    .match-venue {
-      grid-column: 1 / -1;
-      text-align: left;
-      margin-top: 4px;
-    }
-    .tabs { justify-content: flex-start; }
-  }
+@media (max-width:480px){
+  .brand-tag{display:none;}
+  .clock-chip #clockDate{display:none;}
+  .clock-chip{padding:6px 10px;}
+}
+@media (prefers-reduced-motion: reduce){
+  .ticker-track,.caret,.status-tag.live .live-blip,.match-card.status-live,.clock-chip .dot{animation:none !important;}
+}
 </style>
 </head>
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>⚽ Lịch Bóng Đá <span>2026 – 2027</span></h1>
-  <p>World Cup 2026 &nbsp;·&nbsp; Giao hữu / AFF Cup &nbsp;·&nbsp; AFC Asian Cup 2027</p>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="brand">
+      <img class="brand-logo" src="assets/logo.png" alt="ExScore logo">
+      <div class="brand-text">
+        <span class="brand-name">Ex<span>Score</span></span>
+        <span class="brand-tag">Live Football Schedule</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="clock-chip">
+        <div class="row1"><span class="dot" aria-hidden="true"></span><span id="clockTime">--:--:--</span></div>
+        <span id="clockDate">--/--/----</span>
+      </div>
+      <button class="icon-btn" id="btnCalendar" type="button" title="Đi tới lịch thi đấu" aria-label="Đi tới lịch thi đấu">📅</button>
+      <button class="icon-btn" id="btnRefresh" type="button" title="Làm mới dữ liệu" aria-label="Làm mới dữ liệu">🔄</button>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack"></div>
 </div>
 
-<!-- TABS -->
-<div class="tabs">
-  <button class="tab-btn active" onclick="showTab('wc')">🌍 World Cup 2026</button>
-  <button class="tab-btn" onclick="showTab('gh')">🤝 Giao Hữu & AFF Cup</button>
-  <button class="tab-btn" onclick="showTab('ac')">🌏 AFC Asian Cup 2027</button>
+<div class="type-strip">
+  <div class="wrap"><span class="pin">📌</span><span id="typewriter"></span><span class="caret"></span></div>
 </div>
 
-<!-- ════════════════════════ PANEL 1: WORLD CUP ════════════════════════ -->
-<div id="panel-wc" class="panel active">
+<nav class="filters" aria-label="Lọc theo giải đấu">
+  <div class="wrap"><div class="filters-track" id="filtersTrack"></div></div>
+</nav>
 
-  <div class="section-header">
-    <div class="section-icon">🏆</div>
-    <div>
-      <h2>FIFA World Cup 2026</h2>
-      <p>Mỹ · Canada · Mexico &nbsp;|&nbsp; 11/6 – 19/7/2026 &nbsp;|&nbsp; 48 đội · 104 trận</p>
+<main class="wrap" id="schedule">
+  <div class="match-grid" id="matchGrid"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <img src="assets/logo.png" alt="ExScore logo">
+      <span>Ex<span style="color:var(--blue-400)">Score</span></span>
     </div>
+    <div class="footer-links">
+      <a href="#schedule">Lịch thi đấu</a>
+      <a href="#top">Về đầu trang</a>
+    </div>
+    <p class="footer-copy">Ⓒ 2026 ExScore - All Copyright Reversed.</p>
+    <p class="footer-note">Dữ liệu lịch thi đấu mang tính tham khảo / minh hoạ. Thời gian hiển thị theo giờ Việt Nam (GMT+7).</p>
   </div>
+</footer>
 
-  <div class="info-cards">
-    <div class="info-card"><div class="val">48</div><div class="lbl">Đội tham dự</div></div>
-    <div class="info-card"><div class="val">104</div><div class="lbl">Trận đấu</div></div>
-    <div class="info-card"><div class="val">12</div><div class="lbl">Bảng đấu</div></div>
-    <div class="info-card"><div class="val">16</div><div class="lbl">Thành phố đăng cai</div></div>
-    <div class="info-card"><div class="val">38</div><div class="lbl">Ngày thi đấu</div></div>
-  </div>
-
-  <!-- 12 BẢNG ĐẤU -->
-  <div class="section-header" style="margin-top:8px;">
-    <div class="section-icon" style="font-size:1rem;">📋</div>
-    <div><h2 style="font-size:1.2rem;">12 Bảng đấu vòng bảng</h2></div>
-  </div>
-
-  <div class="groups-grid">
-    <!-- Bảng A -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG A</span>
-        <span class="group-badge">Mexico City / Guadalajara</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇲🇽</span><span class="team-name host">Mexico</span><span class="tag host-tag">CH</span></div>
-        <div class="team-row"><span class="flag">🇿🇦</span><span class="team-name">Nam Phi</span></div>
-        <div class="team-row"><span class="flag">🇰🇷</span><span class="team-name">Hàn Quốc</span></div>
-        <div class="team-row"><span class="flag">🇨🇿</span><span class="team-name">CH Séc</span></div>
-      </div>
-    </div>
-    <!-- Bảng B -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG B</span>
-        <span class="group-badge">Toronto / Santa Clara</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇨🇦</span><span class="team-name host">Canada</span><span class="tag host-tag">CH</span></div>
-        <div class="team-row"><span class="flag">🇧🇦</span><span class="team-name">Bosnia & Herzegovina</span></div>
-        <div class="team-row"><span class="flag">🇶🇦</span><span class="team-name">Qatar</span></div>
-        <div class="team-row"><span class="flag">🇨🇭</span><span class="team-name">Thụy Sĩ</span></div>
-      </div>
-    </div>
-    <!-- Bảng C -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG C</span>
-        <span class="group-badge">New Jersey / Foxborough</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇧🇷</span><span class="team-name">Brazil</span></div>
-        <div class="team-row"><span class="flag">🇲🇦</span><span class="team-name">Maroc</span></div>
-        <div class="team-row"><span class="flag">🇭🇹</span><span class="team-name">Haiti</span></div>
-        <div class="team-row"><span class="flag">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span><span class="team-name">Scotland</span></div>
-      </div>
-    </div>
-    <!-- Bảng D -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG D</span>
-        <span class="group-badge">Los Angeles / Vancouver</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇺🇸</span><span class="team-name host">Mỹ</span><span class="tag host-tag">CH</span></div>
-        <div class="team-row"><span class="flag">🇵🇾</span><span class="team-name">Paraguay</span></div>
-        <div class="team-row"><span class="flag">🇦🇺</span><span class="team-name">Australia</span></div>
-        <div class="team-row"><span class="flag">🇹🇷</span><span class="team-name">Thổ Nhĩ Kỳ</span></div>
-      </div>
-    </div>
-    <!-- Bảng E -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG E</span>
-        <span class="group-badge">Houston / Arlington</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇩🇪</span><span class="team-name">Đức</span></div>
-        <div class="team-row"><span class="flag">🇨🇮</span><span class="team-name">Bờ Biển Ngà</span></div>
-        <div class="team-row"><span class="flag">🇪🇨</span><span class="team-name">Ecuador</span></div>
-        <div class="team-row"><span class="flag">🇨🇼</span><span class="team-name">Curaçao</span></div>
-      </div>
-    </div>
-    <!-- Bảng F -->
-    <div class="group-card">
-      <div class="group-card-header" style="background:#1a4a7a;">
-        <span class="group-label">BẢNG F</span>
-        <span class="group-badge" style="background:rgba(255,255,255,.15);">Arlington / Guadalupe</span>
-        <span class="tag death-tag" style="margin-left:auto;">Tử thần</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇳🇱</span><span class="team-name">Hà Lan</span></div>
-        <div class="team-row"><span class="flag">🇯🇵</span><span class="team-name">Nhật Bản</span></div>
-        <div class="team-row"><span class="flag">🇸🇪</span><span class="team-name">Thụy Điển</span></div>
-        <div class="team-row"><span class="flag">🇹🇳</span><span class="team-name">Tunisia</span></div>
-      </div>
-    </div>
-    <!-- Bảng G -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG G</span>
-        <span class="group-badge">Seattle / Los Angeles</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇧🇪</span><span class="team-name">Bỉ</span></div>
-        <div class="team-row"><span class="flag">🇮🇷</span><span class="team-name">Iran</span></div>
-        <div class="team-row"><span class="flag">🇪🇬</span><span class="team-name">Ai Cập</span></div>
-        <div class="team-row"><span class="flag">🇳🇿</span><span class="team-name">New Zealand</span></div>
-      </div>
-    </div>
-    <!-- Bảng H -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG H</span>
-        <span class="group-badge">Atlanta / Miami</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇪🇸</span><span class="team-name">Tây Ban Nha</span></div>
-        <div class="team-row"><span class="flag">🇸🇦</span><span class="team-name">Saudi Arabia</span></div>
-        <div class="team-row"><span class="flag">🇺🇾</span><span class="team-name">Uruguay</span></div>
-        <div class="team-row"><span class="flag">🇨🇻</span><span class="team-name">Cape Verde</span></div>
-      </div>
-    </div>
-    <!-- Bảng I -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG I</span>
-        <span class="group-badge">New York / Boston</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇫🇷</span><span class="team-name">Pháp</span></div>
-        <div class="team-row"><span class="flag">🇮🇶</span><span class="team-name">Iraq</span></div>
-        <div class="team-row"><span class="flag">🇸🇳</span><span class="team-name">Senegal</span></div>
-        <div class="team-row"><span class="flag">🇳🇴</span><span class="team-name">Na Uy</span></div>
-      </div>
-    </div>
-    <!-- Bảng J -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG J</span>
-        <span class="group-badge">Kansas City / Dallas</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇦🇷</span><span class="team-name">Argentina</span></div>
-        <div class="team-row"><span class="flag">🇦🇹</span><span class="team-name">Áo</span></div>
-        <div class="team-row"><span class="flag">🇩🇿</span><span class="team-name">Algeria</span></div>
-        <div class="team-row"><span class="flag">🇯🇴</span><span class="team-name">Jordan</span></div>
-      </div>
-    </div>
-    <!-- Bảng K -->
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG K</span>
-        <span class="group-badge">San Francisco / Denver</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇵🇹</span><span class="team-name">Bồ Đào Nha</span></div>
-        <div class="team-row"><span class="flag">🇺🇿</span><span class="team-name">Uzbekistan</span></div>
-        <div class="team-row"><span class="flag">🇨🇴</span><span class="team-name">Colombia</span></div>
-        <div class="team-row"><span class="flag">🏝️</span><span class="team-name" style="color:var(--gray-2);">Play-off FIFA 1</span></div>
-      </div>
-    </div>
-    <!-- Bảng L (Tử thần) -->
-    <div class="group-card">
-      <div class="group-card-header" style="background:#5a0a0a;">
-        <span class="group-label">BẢNG L</span>
-        <span class="group-badge" style="background:rgba(255,255,255,.12);">New York / Boston</span>
-        <span class="tag death-tag" style="margin-left:auto;">Tử thần</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><span class="team-name">Anh</span></div>
-        <div class="team-row"><span class="flag">🇭🇷</span><span class="team-name">Croatia</span></div>
-        <div class="team-row"><span class="flag">🇬🇭</span><span class="team-name">Ghana</span></div>
-        <div class="team-row"><span class="flag">🇵🇦</span><span class="team-name">Panama</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LỊCH THI ĐẤU VÒNG BẢNG MỞ ĐẦU -->
-  <div class="schedule-section">
-    <h3>⚽ Vòng bảng – Các trận đã diễn ra &amp; sắp đến</h3>
-    <div class="match-list">
-
-      <!-- Trận 1 - ĐÃ QUA -->
-      <div class="match-card past">
-        <div class="match-date"><strong>12/06</strong><span>02:00</span></div>
-        <div class="team-a"><span class="fl">🇲🇽</span><span class="tn">Mexico</span></div>
-        <div class="score-box"><div class="sc ft">2 – 0</div></div>
-        <div class="team-b"><span class="fl">🇿🇦</span><span class="tn">Nam Phi</span></div>
-        <div class="match-venue"><strong>Bảng A</strong>Azteca, Mexico City</div>
-      </div>
-
-      <div class="match-card past">
-        <div class="match-date"><strong>12/06</strong><span>09:00</span></div>
-        <div class="team-a"><span class="fl">🇰🇷</span><span class="tn">Hàn Quốc</span></div>
-        <div class="score-box"><div class="sc ft">2 – 1</div></div>
-        <div class="team-b"><span class="fl">🇨🇿</span><span class="tn">CH Séc</span></div>
-        <div class="match-venue"><strong>Bảng A</strong>Estadio Guadalajara</div>
-      </div>
-
-      <div class="match-card today">
-        <div class="match-date"><strong>13/06</strong><span>02:00</span></div>
-        <div class="team-a"><span class="fl">🇨🇦</span><span class="tn">Canada</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇧🇦</span><span class="tn">Bosnia</span></div>
-        <div class="match-venue"><strong>Bảng B</strong>BMO Field, Toronto</div>
-      </div>
-
-      <div class="match-card today">
-        <div class="match-date"><strong>13/06</strong><span>08:00</span></div>
-        <div class="team-a"><span class="fl">🇺🇸</span><span class="tn">Mỹ</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇵🇾</span><span class="tn">Paraguay</span></div>
-        <div class="match-venue"><strong>Bảng D</strong>SoFi Stadium, LA</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>14/06</strong><span>02:00</span></div>
-        <div class="team-a"><span class="fl">🇶🇦</span><span class="tn">Qatar</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇨🇭</span><span class="tn">Thụy Sĩ</span></div>
-        <div class="match-venue"><strong>Bảng B</strong>Levi's Stadium, Santa Clara</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>14/06</strong><span>05:00</span></div>
-        <div class="team-a"><span class="fl">🇧🇷</span><span class="tn">Brazil</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇲🇦</span><span class="tn">Maroc</span></div>
-        <div class="match-venue"><strong>Bảng C</strong>MetLife Stadium, NJ</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>14/06</strong><span>08:00</span></div>
-        <div class="team-a"><span class="fl">🇭🇹</span><span class="tn">Haiti</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span><span class="tn">Scotland</span></div>
-        <div class="match-venue"><strong>Bảng C</strong>Gillette Stadium, Foxborough</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>14/06</strong><span>11:00</span></div>
-        <div class="team-a"><span class="fl">🇦🇺</span><span class="tn">Australia</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇹🇷</span><span class="tn">Thổ Nhĩ Kỳ</span></div>
-        <div class="match-venue"><strong>Bảng D</strong>BC Place, Vancouver</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>15/06</strong><span>00:00</span></div>
-        <div class="team-a"><span class="fl">🇩🇪</span><span class="tn">Đức</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇨🇼</span><span class="tn">Curaçao</span></div>
-        <div class="match-venue"><strong>Bảng E</strong>NRG Stadium, Houston</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>15/06</strong><span>03:00</span></div>
-        <div class="team-a"><span class="fl">🇳🇱</span><span class="tn">Hà Lan</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇯🇵</span><span class="tn">Nhật Bản</span></div>
-        <div class="match-venue"><strong>Bảng F</strong>AT&T Stadium, Arlington</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>15/06</strong><span>23:00</span></div>
-        <div class="team-a"><span class="fl">🇪🇸</span><span class="tn">Tây Ban Nha</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇨🇻</span><span class="tn">Cape Verde</span></div>
-        <div class="match-venue"><strong>Bảng H</strong>Mercedes-Benz, Atlanta</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>16/06</strong><span>05:00</span></div>
-        <div class="team-a"><span class="fl">🇸🇦</span><span class="tn">Saudi Arabia</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇺🇾</span><span class="tn">Uruguay</span></div>
-        <div class="match-venue"><strong>Bảng H</strong>Hard Rock Stadium, Miami</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>16/06</strong><span>02:00</span></div>
-        <div class="team-a"><span class="fl">🇧🇪</span><span class="tn">Bỉ</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇪🇬</span><span class="tn">Ai Cập</span></div>
-        <div class="match-venue"><strong>Bảng G</strong>Lumen Field, Seattle</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>17/06</strong><span>02:00</span></div>
-        <div class="team-a"><span class="fl">🇫🇷</span><span class="tn">Pháp</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇸🇳</span><span class="tn">Senegal</span></div>
-        <div class="match-venue"><strong>Bảng I</strong>MetLife Stadium, NJ</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>17/06</strong><span>08:00</span></div>
-        <div class="team-a"><span class="fl">🇦🇷</span><span class="tn">Argentina</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇩🇿</span><span class="tn">Algeria</span></div>
-        <div class="match-venue"><strong>Bảng J</strong>Arrowhead, Kansas City</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>18/06</strong><span>08:00</span></div>
-        <div class="team-a"><span class="fl">🇵🇹</span><span class="tn">Bồ Đào Nha</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇺🇿</span><span class="tn">Uzbekistan</span></div>
-        <div class="match-venue"><strong>Bảng K</strong>Levi's Stadium, Santa Clara</div>
-      </div>
-
-      <div class="match-card">
-        <div class="match-date"><strong>20/06</strong><span>08:00</span></div>
-        <div class="team-a"><span class="fl">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><span class="tn">Anh</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇭🇷</span><span class="tn">Croatia</span></div>
-        <div class="match-venue"><strong>Bảng L</strong>Gillette Stadium, Foxborough</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LỊCH KNOCK-OUT -->
-  <div class="knockout-info">
-    <h3>🔥 Lịch vòng loại trực tiếp (Dự kiến)</h3>
-    <div class="ko-timeline">
-      <div class="ko-step"><div class="kd">28/6 – 5/7</div><div class="kr">Vòng 1/16</div><div class="kt">32 đội</div></div>
-      <div class="ko-step"><div class="kd">7/7 – 11/7</div><div class="kr">Vòng 1/8</div><div class="kt">16 đội</div></div>
-      <div class="ko-step"><div class="kd">14/7 – 15/7</div><div class="kr">Tứ kết</div><div class="kt">8 đội</div></div>
-      <div class="ko-step"><div class="kd">17/7 – 18/7</div><div class="kr">Bán kết</div><div class="kt">4 đội</div></div>
-      <div class="ko-step"><div class="kd">19/7</div><div class="kr">Hạng 3</div><div class="kt"></div></div>
-      <div class="ko-step"><div class="kd">20/7</div><div class="kr">🏆 Chung kết</div><div class="kt">MetLife, NJ</div></div>
-    </div>
-  </div>
-
-</div><!-- end panel-wc -->
-
-
-<!-- ════════════════════════ PANEL 2: GIAO HỮU & AFF CUP ════════════════════════ -->
-<div id="panel-gh" class="panel">
-
-  <div class="section-header">
-    <div class="section-icon">🤝</div>
-    <div>
-      <h2>Giao Hữu Quốc Tế & AFF Cup 2026</h2>
-      <p>Các trận giao hữu FIFA Days &amp; Giải vô địch bóng đá Đông Nam Á (ASEAN Cup 2026)</p>
-    </div>
-  </div>
-
-  <!-- FIFA DAYS INFO -->
-  <div class="friendly-card">
-    <h4>📅 Các đợt FIFA Days 2026</h4>
-    <div class="match-list">
-      <div class="match-card past">
-        <div class="match-date"><strong>Tháng 3</strong><span>2026</span></div>
-        <div class="team-a"><span class="tn">FIFA Days T3</span></div>
-        <div class="score-box"><div class="sc ft">✅</div></div>
-        <div class="team-b"><span class="tn">Đã diễn ra</span></div>
-        <div class="match-venue"><strong>Giao hữu</strong>Các ĐTQG toàn cầu</div>
-      </div>
-      <div class="match-card past">
-        <div class="match-date"><strong>Tháng 6</strong><span>2026</span></div>
-        <div class="team-a"><span class="tn">FIFA Days T6</span></div>
-        <div class="score-box"><div class="sc ft">⏭</div></div>
-        <div class="team-b"><span class="tn" style="color:var(--gray-2);">Việt Nam nghỉ</span></div>
-        <div class="match-venue"><strong>Giao hữu</strong>ĐT VN tập trung quốc nội</div>
-      </div>
-      <div class="match-card">
-        <div class="match-date"><strong>Tháng 9</strong><span>2026</span></div>
-        <div class="team-a"><span class="tn">FIFA Days T9</span></div>
-        <div class="score-box"><div class="vs">TBD</div></div>
-        <div class="team-b"><span class="tn">Sắp diễn ra</span></div>
-        <div class="match-venue"><strong>Giao hữu</strong>Các ĐTQG</div>
-      </div>
-      <div class="match-card">
-        <div class="match-date"><strong>Tháng 10</strong><span>2026</span></div>
-        <div class="team-a"><span class="tn">FIFA Days T10</span></div>
-        <div class="score-box"><div class="vs">TBD</div></div>
-        <div class="team-b"><span class="tn">Sắp diễn ra</span></div>
-        <div class="match-venue"><strong>Giao hữu</strong>Chuẩn bị Asian Cup</div>
-      </div>
-      <div class="match-card">
-        <div class="match-date"><strong>Tháng 11</strong><span>2026</span></div>
-        <div class="team-a"><span class="tn">FIFA Days T11</span></div>
-        <div class="score-box"><div class="vs">TBD</div></div>
-        <div class="team-b"><span class="tn">Sắp diễn ra</span></div>
-        <div class="match-venue"><strong>Giao hữu</strong>Chuẩn bị Asian Cup</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- GIAO HỮU NỔI BẬT TRƯỚC WORLD CUP -->
-  <div class="friendly-card">
-    <h4>🌟 Giao hữu nổi bật trước World Cup 2026</h4>
-    <div class="match-list">
-      <div class="match-card past">
-        <div class="match-date"><strong>T5/2026</strong><span>Giao hữu</span></div>
-        <div class="team-a"><span class="fl">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span><span class="tn">Anh</span></div>
-        <div class="score-box"><div class="sc ft">6 – 0</div></div>
-        <div class="team-b"><span class="tn">Miami FC</span></div>
-        <div class="match-venue"><strong>Tập huấn</strong>Florida, Mỹ</div>
-      </div>
-      <div class="match-card past">
-        <div class="match-date"><strong>T5/2026</strong><span>Giao hữu</span></div>
-        <div class="team-a"><span class="fl">🇫🇷</span><span class="tn">Pháp</span></div>
-        <div class="score-box"><div class="sc ft">NN</div></div>
-        <div class="team-b"><span class="fl">🇨🇮</span><span class="tn">Bờ Biển Ngà</span></div>
-        <div class="match-venue"><strong>Giao hữu</strong>Trước WC 2026</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- AFF CUP 2026 -->
-  <div class="section-header" style="margin-top: 16px;">
-    <div class="section-icon">🦁</div>
-    <div>
-      <h2>AFF Cup / ASEAN Cup 2026</h2>
-      <p>24/7 – 26/8/2026 &nbsp;|&nbsp; Lần đầu tổ chức mùa hè &nbsp;|&nbsp; Việt Nam đương kim vô địch</p>
-    </div>
-  </div>
-
-  <div class="info-cards">
-    <div class="info-card"><div class="val">10</div><div class="lbl">Đội tuyển</div></div>
-    <div class="info-card"><div class="val">2</div><div class="lbl">Bảng đấu</div></div>
-    <div class="info-card"><div class="val">24/7</div><div class="lbl">Khai mạc</div></div>
-    <div class="info-card"><div class="val">26/8</div><div class="lbl">Chung kết lượt về</div></div>
-  </div>
-
-  <!-- BẢNG A AFF -->
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-bottom:24px;">
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG A</span>
-        <span class="group-badge">AFF Cup 2026</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇻🇳</span><span class="team-name host">Việt Nam 🏆</span><span class="tag host-tag">ĐKVĐ</span></div>
-        <div class="team-row"><span class="flag">🇮🇩</span><span class="team-name">Indonesia</span></div>
-        <div class="team-row"><span class="flag">🇸🇬</span><span class="team-name">Singapore</span></div>
-        <div class="team-row"><span class="flag">🇰🇭</span><span class="team-name">Campuchia</span></div>
-        <div class="team-row"><span class="flag">🏝️</span><span class="team-name" style="color:var(--gray-2);">Timor Leste / Brunei</span></div>
-      </div>
-    </div>
-    <div class="group-card">
-      <div class="group-card-header">
-        <span class="group-label">BẢNG B</span>
-        <span class="group-badge">AFF Cup 2026</span>
-      </div>
-      <div class="group-card-body">
-        <div class="team-row"><span class="flag">🇹🇭</span><span class="team-name">Thái Lan</span></div>
-        <div class="team-row"><span class="flag">🇲🇾</span><span class="team-name">Malaysia</span></div>
-        <div class="team-row"><span class="flag">🇵🇭</span><span class="team-name">Philippines</span></div>
-        <div class="team-row"><span class="flag">🇲🇲</span><span class="team-name">Myanmar</span></div>
-        <div class="team-row"><span class="flag">🇱🇦</span><span class="team-name">Lào</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LỊCH ĐTVN TẠI AFF CUP -->
-  <div class="schedule-section">
-    <h3>🇻🇳 Lịch thi đấu Đội tuyển Việt Nam – AFF Cup 2026</h3>
-    <div class="match-list">
-      <div class="match-card">
-        <div class="match-date"><strong>24/07</strong><span>19:30</span></div>
-        <div class="team-a"><span class="fl">🏝️</span><span class="tn">T.Leste/Brunei</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
-        <div class="match-venue"><strong>Vòng bảng</strong>Sân khách</div>
-      </div>
-      <div class="match-card">
-        <div class="match-date"><strong>31/07</strong><span>19:30</span></div>
-        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇸🇬</span><span class="tn">Singapore</span></div>
-        <div class="match-venue"><strong>Vòng bảng</strong>Mỹ Đình, Hà Nội</div>
-      </div>
-      <div class="match-card">
-        <div class="match-date"><strong>03/08</strong><span>20:00</span></div>
-        <div class="team-a"><span class="fl">🇮🇩</span><span class="tn">Indonesia</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
-        <div class="match-venue"><strong>Vòng bảng</strong>Sân khách – Jakarta</div>
-      </div>
-      <div class="match-card">
-        <div class="match-date"><strong>07/08</strong><span>19:30</span></div>
-        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇰🇭</span><span class="tn">Campuchia</span></div>
-        <div class="match-venue"><strong>Vòng bảng</strong>Mỹ Đình, Hà Nội</div>
-      </div>
-      <div class="match-card">
-        <div class="match-date"><strong>15-19/8</strong><span></span></div>
-        <div class="team-a"><span class="tn">Bán kết</span></div>
-        <div class="score-box"><div class="vs">TBD</div></div>
-        <div class="team-b"><span class="tn">Lượt đi/về</span></div>
-        <div class="match-venue"><strong>Bán kết</strong>Theo xếp hạng</div>
-      </div>
-      <div class="match-card">
-        <div class="match-date"><strong>23 &amp; 26/8</strong><span></span></div>
-        <div class="team-a"><span class="tn">Chung kết</span></div>
-        <div class="score-box"><div class="vs">🏆</div></div>
-        <div class="team-b"><span class="tn">Lượt đi/về</span></div>
-        <div class="match-venue"><strong>Chung kết</strong>FPT Play phát sóng</div>
-      </div>
-    </div>
-  </div>
-
-</div><!-- end panel-gh -->
-
-
-<!-- ════════════════════════ PANEL 3: AFC ASIAN CUP 2027 ════════════════════════ -->
-<div id="panel-ac" class="panel">
-
-  <div class="section-header">
-    <div class="section-icon">🌙</div>
-    <div>
-      <h2>AFC Asian Cup Saudi Arabia 2027</h2>
-      <p>Saudi Arabia &nbsp;|&nbsp; 7/1 – 5/2/2027 &nbsp;|&nbsp; Riyadh · Jeddah · Al Khobar</p>
-    </div>
-  </div>
-
-  <div class="info-cards">
-    <div class="info-card"><div class="val">24</div><div class="lbl">Đội tham dự</div></div>
-    <div class="info-card"><div class="val">6</div><div class="lbl">Bảng đấu</div></div>
-    <div class="info-card"><div class="val">8</div><div class="lbl">Sân vận động</div></div>
-    <div class="info-card"><div class="val">7/1</div><div class="lbl">Khai mạc</div></div>
-    <div class="info-card"><div class="val">5/2</div><div class="lbl">Chung kết</div></div>
-  </div>
-
-  <div class="section-header" style="margin-top:8px;">
-    <div class="section-icon" style="font-size:1rem;">📋</div>
-    <div><h2 style="font-size:1.2rem;">6 Bảng đấu VCK</h2></div>
-  </div>
-
-  <div class="ac-groups">
-    <!-- Bảng A -->
-    <div class="ac-group">
-      <div class="ac-group-hdr">
-        <span class="gl">BẢNG A</span>
-        <span class="gn">Chủ nhà</span>
-        <span class="tag host-tag" style="margin-left:auto;">Riyadh</span>
-      </div>
-      <div class="ac-group-body">
-        <div class="team-row"><span class="flag">🇸🇦</span><span class="team-name host">Saudi Arabia</span><span class="tag host-tag">CH</span></div>
-        <div class="team-row"><span class="flag">🇰🇼</span><span class="team-name">Kuwait</span></div>
-        <div class="team-row"><span class="flag">🇴🇲</span><span class="team-name">Oman</span></div>
-        <div class="team-row"><span class="flag">🇵🇸</span><span class="team-name">Palestine</span></div>
-      </div>
-    </div>
-    <!-- Bảng B -->
-    <div class="ac-group">
-      <div class="ac-group-hdr">
-        <span class="gl">BẢNG B</span>
-        <span class="gn">Tây Á</span>
-      </div>
-      <div class="ac-group-body">
-        <div class="team-row"><span class="flag">🇮🇷</span><span class="team-name">Iran</span></div>
-        <div class="team-row"><span class="flag">🇦🇺</span><span class="team-name">Australia</span></div>
-        <div class="team-row"><span class="flag">🇧🇭</span><span class="team-name">Bahrain</span></div>
-        <div class="team-row"><span class="flag">🇸🇾</span><span class="team-name">Syria</span></div>
-      </div>
-    </div>
-    <!-- Bảng C -->
-    <div class="ac-group">
-      <div class="ac-group-hdr">
-        <span class="gl">BẢNG C</span>
-        <span class="gn">Đông Á</span>
-      </div>
-      <div class="ac-group-body">
-        <div class="team-row"><span class="flag">🇮🇶</span><span class="team-name">Iraq</span></div>
-        <div class="team-row"><span class="flag">🇨🇳</span><span class="team-name">Trung Quốc</span></div>
-        <div class="team-row"><span class="flag">🇯🇴</span><span class="team-name">Jordan</span></div>
-        <div class="team-row"><span class="flag">🇰🇬</span><span class="team-name">Kyrgyzstan</span></div>
-      </div>
-    </div>
-    <!-- Bảng D -->
-    <div class="ac-group">
-      <div class="ac-group-hdr">
-        <span class="gl">BẢNG D</span>
-        <span class="gn">Trung Á</span>
-      </div>
-      <div class="ac-group-body">
-        <div class="team-row"><span class="flag">🇺🇿</span><span class="team-name">Uzbekistan</span></div>
-        <div class="team-row"><span class="flag">🇶🇦</span><span class="team-name">Qatar 🏆</span></div>
-        <div class="team-row"><span class="flag">🇰🇵</span><span class="team-name">Triều Tiên</span></div>
-        <div class="team-row"><span class="flag">🇹🇯</span><span class="team-name">Tajikistan</span></div>
-      </div>
-    </div>
-    <!-- Bảng E – Việt Nam -->
-    <div class="ac-group" style="border-color:rgba(240,192,66,.4);">
-      <div class="ac-group-hdr" style="background:linear-gradient(90deg,#6b4400,#c8971d88);">
-        <span class="gl">BẢNG E</span>
-        <span class="gn" style="color:var(--gold);">🇻🇳 Có Việt Nam</span>
-      </div>
-      <div class="ac-group-body">
-        <div class="team-row"><span class="flag">🇰🇷</span><span class="team-name" style="color:#fff;">Hàn Quốc</span></div>
-        <div class="team-row"><span class="flag">🇦🇪</span><span class="team-name">UAE</span></div>
-        <div class="team-row"><span class="flag">🇻🇳</span><span class="team-name host">Việt Nam 🌟</span></div>
-        <div class="team-row"><span class="flag">🇱🇧</span><span class="team-name" style="color:var(--gray-2);">Lebanon / Yemen</span></div>
-      </div>
-    </div>
-    <!-- Bảng F – Tử thần -->
-    <div class="ac-group">
-      <div class="ac-group-hdr death-hdr">
-        <span class="gl">BẢNG F</span>
-        <span class="gn">ĐNÁ đại chiến</span>
-        <span class="tag death-tag" style="margin-left:auto;">Tử thần</span>
-      </div>
-      <div class="ac-group-body">
-        <div class="team-row"><span class="flag">🇯🇵</span><span class="team-name">Nhật Bản</span></div>
-        <div class="team-row"><span class="flag">🇶🇦</span><span class="team-name">Qatar</span></div>
-        <div class="team-row"><span class="flag">🇹🇭</span><span class="team-name">Thái Lan</span></div>
-        <div class="team-row"><span class="flag">🇮🇩</span><span class="team-name">Indonesia</span></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- LỊCH SƠ BỘ -->
-  <div class="schedule-section" style="margin-top:28px;">
-    <h3>📅 Lịch dự kiến – Vòng bảng (Giờ Việt Nam)</h3>
-    <div class="match-list">
-      <div class="match-card">
-        <div class="match-date"><strong>07/01/27</strong><span>21:00</span></div>
-        <div class="team-a"><span class="fl">🇸🇦</span><span class="tn">Saudi Arabia</span></div>
-        <div class="score-box"><div class="vs">Khai mạc</div></div>
-        <div class="team-b"><span class="tn">TBD (A4)</span></div>
-        <div class="match-venue"><strong>Bảng A</strong>King Fahd, Riyadh</div>
-      </div>
-      <div class="match-card" style="border-color:rgba(240,192,66,.35);">
-        <div class="match-date"><strong>~11/01/27</strong><span></span></div>
-        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇦🇪</span><span class="tn">UAE</span></div>
-        <div class="match-venue"><strong>Bảng E</strong>Saudi Arabia</div>
-      </div>
-      <div class="match-card" style="border-color:rgba(240,192,66,.35);">
-        <div class="match-date"><strong>~15/01/27</strong><span></span></div>
-        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇰🇷</span><span class="tn">Hàn Quốc</span></div>
-        <div class="match-venue"><strong>Bảng E</strong>Saudi Arabia</div>
-      </div>
-      <div class="match-card" style="border-color:rgba(240,192,66,.35);">
-        <div class="match-date"><strong>~19/01/27</strong><span></span></div>
-        <div class="team-a"><span class="fl">🇻🇳</span><span class="tn">Việt Nam</span></div>
-        <div class="score-box"><div class="vs">VS</div></div>
-        <div class="team-b"><span class="fl">🇱🇧</span><span class="tn">Lebanon/Yemen</span></div>
-        <div class="match-venue"><strong>Bảng E</strong>Saudi Arabia</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- THÔNG TIN ĐỘI TUYỂN VIỆT NAM -->
-  <div class="friendly-card" style="border-color:rgba(240,192,66,.3);">
-    <h4>🇻🇳 Hành trình Đội tuyển Việt Nam</h4>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;font-size:.85rem;">
-      <div style="background:#081a0f;padding:14px;border-radius:8px;">
-        <div style="color:var(--gold);font-weight:700;margin-bottom:6px;">Vòng loại</div>
-        <div style="color:var(--gray-2);">Toàn thắng 6 trận bảng F (Malaysia, Lào, Nepal). <span style="color:var(--green-light);">Đứng đầu bảng</span>.</div>
-      </div>
-      <div style="background:#081a0f;padding:14px;border-radius:8px;">
-        <div style="color:var(--gold);font-weight:700;margin-bottom:6px;">Nhóm hạt giống</div>
-        <div style="color:var(--gray-2);">Nhóm 3 (FIFA thứ 99). Cùng bảng E với Hàn Quốc, UAE và Lebanon/Yemen.</div>
-      </div>
-      <div style="background:#081a0f;padding:14px;border-radius:8px;">
-        <div style="color:var(--gold);font-weight:700;margin-bottom:6px;">HLV</div>
-        <div style="color:var(--gray-2);">Kim Sang-sik dẫn dắt. Lần thứ 4 Việt Nam dự VCK Asian Cup.</div>
-      </div>
-      <div style="background:#081a0f;padding:14px;border-radius:8px;">
-        <div style="color:var(--gold);font-weight:700;margin-bottom:6px;">Thành tích tốt nhất</div>
-        <div style="color:var(--gray-2);">Tứ kết năm 2007 và 2019. Mục tiêu ít nhất vòng 1/8.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- KNOCKOUT -->
-  <div class="knockout-info">
-    <h3>🏆 Thể thức vòng knock-out</h3>
-    <div class="ko-timeline">
-      <div class="ko-step"><div class="kd">24/01/27</div><div class="kr">Vòng 1/8</div><div class="kt">16 đội</div></div>
-      <div class="ko-step"><div class="kd">28–29/01</div><div class="kr">Tứ kết</div><div class="kt">8 đội</div></div>
-      <div class="ko-step"><div class="kd">01–02/02</div><div class="kr">Bán kết</div><div class="kt">4 đội</div></div>
-      <div class="ko-step"><div class="kd">04/02/27</div><div class="kr">Hạng 3</div><div class="kt"></div></div>
-      <div class="ko-step"><div class="kd">05/02/27</div><div class="kr">🏆 Chung kết</div><div class="kt">King Fahd, Riyadh</div></div>
-    </div>
-    <p style="margin-top:14px;font-size:.8rem;color:var(--gray-3);">16 đội vào vòng 1/8 = 12 đội nhất/nhì bảng + 4 đội hạng 3 tốt nhất</p>
-  </div>
-
-</div><!-- end panel-ac -->
-
-<!-- FOOTER -->
-<div class="page-footer">
-  Dữ liệu cập nhật 13/6/2026 · World Cup 2026 đang diễn ra · AFC Asian Cup 2027: Lịch thi đấu chi tiết chưa chính thức · Giờ theo giờ Việt Nam (GMT+7)
-</div>
+<div class="toast" id="toast"></div>
 
 <script>
-  function showTab(id) {
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('panel-' + id).classList.add('active');
-    event.currentTarget.classList.add('active');
-  }
-</script>
+const flagTeam = (name, iso) => ({ type:'flag', name, iso });
+const clubTeam = (name, abbr, c1, c2, fg) => ({ type:'club', name, abbr, c1, c2, fg: fg || '#fff' });
 
+const COMPETITIONS = [
+  { id:'wc2026',     name:'FIFA World Cup 2026',     short:'World Cup 2026',      badge:'assets/badges/wc2026.png' },
+  { id:'epl',        name:'Premier League',          short:'Premier League',      badge:'assets/badges/epl.png' },
+  { id:'laliga',     name:'LaLiga',                  short:'LaLiga',              badge:'assets/badges/laliga.png' },
+  { id:'bundesliga', name:'Bundesliga',               short:'Bundesliga',          badge:'assets/badges/bundesliga.png' },
+  { id:'seriea',     name:'Serie A',                 short:'Serie A',             badge:'assets/badges/seriea.png' },
+  { id:'ligue1',     name:'Ligue 1',                 short:'Ligue 1',             badge:'assets/badges/ligue1.png' },
+  { id:'mls',        name:'MLS',                     short:'MLS',                 badge:'assets/badges/mls.png' },
+  { id:'spl',        name:'ROSHN Saudi League',      short:'ROSHN Saudi League',  badge:'assets/badges/spl.png' },
+  { id:'ucl',        name:'UEFA Champions League',   short:'UEFA Champions League', badge:'assets/badges/ucl.png' },
+  { id:'uel',        name:'UEFA Europa League',      short:'UEFA Europa League',  badge:'assets/badges/uel.png' },
+  { id:'uecl',       name:'UEFA Conference League',  short:'UEFA Conference League', badge:'assets/badges/uecl.png' },
+  { id:'afc2027',    name:'AFC Asian Cup 2027',      short:'AFC Asian Cup 2027',  badge:'assets/badges/afc2027.png' },
+];
+
+const MATCHES = [
+  // ===== WORLD CUP 2026 =====
+  { comp:'wc2026', date:'2026-06-16', time:'21:00', status:'live', home:flagTeam('Tây Ban Nha','es'), away:flagTeam('Croatia','hr'), score:{h:2,a:1}, live:{half:2, minute:73} },
+  { comp:'wc2026', date:'2026-06-16', time:'18:00', status:'live', home:flagTeam('Đức','de'), away:flagTeam('Nhật Bản','jp'), score:{h:1,a:0}, live:{half:1, minute:41} },
+  { comp:'wc2026', date:'2026-06-17', time:'02:00', status:'ns', home:flagTeam('Anh','gb-eng'), away:flagTeam('Iran','ir') },
+  { comp:'wc2026', date:'2026-06-17', time:'23:00', status:'ns', home:flagTeam('Brazil','br'), away:flagTeam('Maroc','ma') },
+  { comp:'wc2026', date:'2026-06-17', time:'20:00', status:'ns', home:flagTeam('Bồ Đào Nha','pt'), away:flagTeam('Hàn Quốc','kr') },
+  { comp:'wc2026', date:'2026-06-18', time:'01:00', status:'ns', home:flagTeam('Argentina','ar'), away:flagTeam('Ả Rập Saudi','sa') },
+  { comp:'wc2026', date:'2026-06-14', time:'20:00', status:'ft', home:flagTeam('Pháp','fr'), away:flagTeam('Úc','au'), score:{h:3,a:0} },
+  { comp:'wc2026', date:'2026-06-15', time:'23:00', status:'ft', home:flagTeam('Mexico','mx'), away:flagTeam('Bỉ','be'), score:{h:1,a:1} },
+  // ===== PREMIER LEAGUE =====
+  { comp:'epl', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('Manchester City','MCI','#6CABDD','#1C2C5B'), away:clubTeam('Liverpool','LIV','#C8102E','#00112C'), score:{h:1,a:1}, live:{half:2, minute:64} },
+  { comp:'epl', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('West Ham','WHU','#7A263A','#1A1A2E'), away:clubTeam('Brighton','BHA','#0057B8','#003C7E'), score:{h:0,a:2}, live:{half:1, minute:30} },
+  { comp:'epl', date:'2026-06-18', time:'21:00', status:'ns', home:clubTeam('Arsenal','ARS','#EF0107','#8C0000'), away:clubTeam('Chelsea','CHE','#034694','#0A1F44') },
+  { comp:'epl', date:'2026-06-19', time:'23:00', status:'ns', home:clubTeam('Manchester United','MUN','#DA291C','#7A1610'), away:clubTeam('Aston Villa','AVL','#670E36','#3A0A1F') },
+  { comp:'epl', date:'2026-06-20', time:'21:00', status:'ns', home:clubTeam('Newcastle','NEW','#1A1A1A','#3A3A3A'), away:clubTeam('Everton','EVE','#274488','#0A1F44') },
+  { comp:'epl', date:'2026-06-15', time:'19:56', status:'ft', home:clubTeam('Tottenham','TOT','#132257','#1F3A93'), away:clubTeam('Wolves','WOL','#FDB913','#231F20','#231F20'), score:{h:2,a:2} },
+  { comp:'epl', date:'2026-06-14', time:'19:56', status:'ft', home:clubTeam('Brentford','BRE','#E30613','#7A0A1A'), away:clubTeam('Crystal Palace','CRY','#1B458F','#0A1F44'), score:{h:1,a:3} },
+  { comp:'epl', date:'2026-06-13', time:'19:56', status:'ft', home:clubTeam('Fulham','FUL','#FFFFFF','#CCCCCC','#1A1A1A'), away:clubTeam('Bournemouth','BOU','#DA291C','#7A1610'), score:{h:0,a:0} },
+  // ===== LALIGA =====
+  { comp:'laliga', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('Real Madrid','RMA','#FFFFFF','#CFD8E8','#142C57'), away:clubTeam('Barcelona','BAR','#A50044','#004D98'), score:{h:2,a:2}, live:{half:2, minute:81} },
+  { comp:'laliga', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('Real Betis','BET','#0BB363','#0A4D2E'), away:clubTeam('Girona','GIR','#CC0000','#7A0000'), score:{h:1,a:0}, live:{half:2, minute:50} },
+  { comp:'laliga', date:'2026-06-17', time:'20:00', status:'ns', home:clubTeam('Atletico Madrid','ATM','#CB3524','#272E61'), away:clubTeam('Sevilla','SEV','#D40032','#7A0A1A') },
+  { comp:'laliga', date:'2026-06-18', time:'22:00', status:'ns', home:clubTeam('Valencia','VAL','#FF7900','#B35300'), away:clubTeam('Villarreal','VIL','#FFD93D','#FFB000','#142C57') },
+  { comp:'laliga', date:'2026-06-19', time:'20:00', status:'ns', home:clubTeam('Celta Vigo','CEL','#8AC3EE','#003F87'), away:clubTeam('Osasuna','OSA','#D2122E','#0A1F44') },
+  { comp:'laliga', date:'2026-06-14', time:'19:56', status:'ft', home:clubTeam('Real Sociedad','RSO','#0066B2','#003764'), away:clubTeam('Athletic Bilbao','ATH','#EE2523','#CC1F1F'), score:{h:1,a:0} },
+  { comp:'laliga', date:'2026-06-15', time:'19:56', status:'ft', home:clubTeam('Mallorca','MLL','#CC0000','#1A1A1A'), away:clubTeam('Getafe','GET','#1B4F9C','#0A1F44'), score:{h:2,a:1} },
+  { comp:'laliga', date:'2026-06-13', time:'19:56', status:'ft', home:clubTeam('Las Palmas','LPA','#FFE800','#005CA9','#142C57'), away:clubTeam('Alaves','ALA','#1B458F','#0A1F44'), score:{h:0,a:2} },
+  // ===== BUNDESLIGA =====
+  { comp:'bundesliga', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('Bayern Munich','BAY','#DC052D','#0066B2'), away:clubTeam('Borussia Dortmund','BVB','#FDE100','#FFC400','#1A1A1A'), score:{h:3,a:1}, live:{half:2, minute:55} },
+  { comp:'bundesliga', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('Union Berlin','FCU','#EB1923','#7A0A10'), away:clubTeam('Freiburg','SCF','#000000','#E2001A'), score:{h:0,a:1}, live:{half:1, minute:35} },
+  { comp:'bundesliga', date:'2026-06-17', time:'19:30', status:'ns', home:clubTeam('RB Leipzig','RBL','#DD0741','#8C0429'), away:clubTeam('Bayer Leverkusen','B04','#E32221','#7A1110') },
+  { comp:'bundesliga', date:'2026-06-19', time:'19:30', status:'ns', home:clubTeam('M.Gladbach','BMG','#1A1A1A','#3A3A3A'), away:clubTeam('Wolfsburg','WOB','#65B32E','#2E6B13') },
+  { comp:'bundesliga', date:'2026-06-20', time:'19:30', status:'ns', home:clubTeam('Mainz','M05','#C3141E','#7A0A10'), away:clubTeam('Werder Bremen','SVW','#1A8A3C','#0A4D20') },
+  { comp:'bundesliga', date:'2026-06-15', time:'19:56', status:'ft', home:clubTeam('Eintracht Frankfurt','SGE','#E1000F','#1A1A1A'), away:clubTeam('VfB Stuttgart','VFB','#E32219','#8C1310'), score:{h:0,a:0} },
+  { comp:'bundesliga', date:'2026-06-14', time:'19:56', status:'ft', home:clubTeam('Hoffenheim','TSG','#1C63B7','#0A3568'), away:clubTeam('Augsburg','FCA','#BA3733','#7A2018'), score:{h:2,a:2} },
+  { comp:'bundesliga', date:'2026-06-13', time:'19:56', status:'ft', home:clubTeam('Bochum','BOC','#005CA9','#002A52'), away:clubTeam('Heidenheim','HDH','#E2001A','#7A0A10'), score:{h:1,a:3} },
+  // ===== SERIE A =====
+  { comp:'seriea', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('Juventus','JUV','#1A1A1A','#3A3A3A'), away:clubTeam('Inter Milan','INT','#0068A8','#14213D'), score:{h:0,a:0}, live:{half:1, minute:38} },
+  { comp:'seriea', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('Bologna','BOL','#8E1F2F','#3A0E14'), away:clubTeam('Torino','TOR','#6B1029','#2B0A10'), score:{h:1,a:1}, live:{half:2, minute:60} },
+  { comp:'seriea', date:'2026-06-18', time:'21:45', status:'ns', home:clubTeam('AC Milan','ACM','#FB090B','#1A1A1A'), away:clubTeam('Napoli','NAP','#12A0D7','#003C71') },
+  { comp:'seriea', date:'2026-06-20', time:'20:45', status:'ns', home:clubTeam('Atalanta','ATA','#1D72B8','#14213D'), away:clubTeam('Fiorentina','FIO','#6E35A3','#3E1D63') },
+  { comp:'seriea', date:'2026-06-19', time:'18:30', status:'ns', home:clubTeam('Udinese','UDI','#1A1A1A','#3A3A3A'), away:clubTeam('Genoa','GEN','#C8102E','#1B3F8B') },
+  { comp:'seriea', date:'2026-06-14', time:'19:56', status:'ft', home:clubTeam('AS Roma','ROM','#8E1F2F','#5E1420'), away:clubTeam('Lazio','LAZ','#87D8F7','#4FB3E0','#0E1E5B'), score:{h:2,a:1} },
+  { comp:'seriea', date:'2026-06-15', time:'19:56', status:'ft', home:clubTeam('Verona','VER','#FFE100','#0033A0','#142C57'), away:clubTeam('Cagliari','CAG','#A50034','#0A1F44'), score:{h:0,a:2} },
+  { comp:'seriea', date:'2026-06-13', time:'19:56', status:'ft', home:clubTeam('Empoli','EMP','#1A4FA0','#0A2A5C'), away:clubTeam('Lecce','LEC','#FFE100','#C8102E'), score:{h:1,a:1} },
+  // ===== LIGUE 1 =====
+  { comp:'ligue1', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('PSG','PSG','#004170','#DA291C'), away:clubTeam('Marseille','OM','#2FAEE0','#1573A6'), score:{h:2,a:0}, live:{half:2, minute:70} },
+  { comp:'ligue1', date:'2026-06-16', time:'19:56', status:'live', home:clubTeam('Toulouse','TFC','#6F1AB6','#3A0D5C'), away:clubTeam('Nantes','FCN','#FFD200','#0A4D2E','#0A4D2E'), score:{h:1,a:1}, live:{half:1, minute:40} },
+  { comp:'ligue1', date:'2026-06-17', time:'21:00', status:'ns', home:clubTeam('Monaco','ASM','#E61E2B','#8C1018'), away:clubTeam('Lyon','OL','#1A4D8C','#002D5C') },
+  { comp:'ligue1', date:'2026-06-19', time:'21:00', status:'ns', home:clubTeam('Rennes','REN','#E0192D','#1A1A1A'), away:clubTeam('Lens','RCL','#E0102E','#B8920A') },
+  { comp:'ligue1', date:'2026-06-20', time:'21:00', status:'ns', home:clubTeam('Strasbourg','RCS','#1B4F9C','#0A2A5C'), away:clubTeam('Brest','BRE2','#E2001A','#9C0010') },
+  { comp:'ligue1', date:'2026-06-15', time:'19:56', status:'ft', home:clubTeam('Lille','LOSC','#E0102E','#1B2742'), away:clubTeam('Nice','OGCN','#C8102E','#1A1A1A'), score:{h:1,a:1} },
+  { comp:'ligue1', date:'2026-06-14', time:'19:56', status:'ft', home:clubTeam('Reims','SDR','#E2001A','#7A0A10'), away:clubTeam('Le Havre','HAC','#5BA8D9','#1B4F9C'), score:{h:0,a:1} },
+  { comp:'ligue1', date:'2026-06-13', time:'19:56', status:'ft', home:clubTeam('Angers','SCO','#1A1A1A','#3A3A3A'), away:clubTeam('Auxerre','AJA','#1B4F9C','#0A2A5C'), score:{h:2,a:0} },
+  // ===== MLS =====
+  { comp:'mls', date:'2026-06-16', time:'08:00', status:'live', home:clubTeam('LAFC','LAFC','#1A1A1A','#6B5733'), away:clubTeam('LA Galaxy','LAG','#1A4D8C','#00245D'), score:{h:1,a:2}, live:{half:2, minute:66} },
+  { comp:'mls', date:'2026-06-16', time:'08:00', status:'live', home:clubTeam('FC Cincinnati','CIN','#FE5000','#7A2800'), away:clubTeam('Orlando City','ORL','#612A5D','#3A1838'), score:{h:0,a:0}, live:{half:1, minute:25} },
+  { comp:'mls', date:'2026-06-17', time:'08:30', status:'ns', home:clubTeam('Inter Miami','MIA','#EC1B4B','#231F20'), away:clubTeam('NYCFC','NYC','#6CACE4','#001E62') },
+  { comp:'mls', date:'2026-06-18', time:'07:30', status:'ns', home:clubTeam('Austin FC','ATX','#00B140','#14361F'), away:clubTeam('Columbus Crew','CLB','#FFD400','#B89A00','#1A1A1A') },
+  { comp:'mls', date:'2026-06-19', time:'08:00', status:'ns', home:clubTeam('Portland Timbers','POR','#004812','#0A2E0A'), away:clubTeam('Real Salt Lake','RSL','#B30838','#001C3D') },
+  { comp:'mls', date:'2026-06-15', time:'08:00', status:'ft', home:clubTeam('Seattle Sounders','SEA','#5D9741','#00255D'), away:clubTeam('Atlanta United','ATL','#80000A','#1A1A1A'), score:{h:1,a:1} },
+  { comp:'mls', date:'2026-06-14', time:'08:00', status:'ft', home:clubTeam('Philadelphia Union','PHI','#0A1E3C','#B19759','#0A1E3C'), away:clubTeam('Charlotte FC','CLT','#1A85C8','#0A3A5C'), score:{h:2,a:1} },
+  { comp:'mls', date:'2026-06-13', time:'08:00', status:'ft', home:clubTeam('Nashville SC','NSH','#ECE83A','#1A1A1A','#1A1A1A'), away:clubTeam('Toronto FC','TOR2','#B81137','#6C0A20'), score:{h:0,a:0} },
+  // ===== ROSHN SAUDI LEAGUE (mùa giải mới khởi tranh 8/2026) =====
+  { comp:'spl', date:'2026-08-14', time:'22:00', status:'ns', home:clubTeam('Al Hilal','HIL','#0057A8','#002A52'), away:clubTeam('Al Nassr','NAS','#FFD400','#1B3B6F') },
+  { comp:'spl', date:'2026-08-15', time:'22:00', status:'ns', home:clubTeam('Al Ittihad','ITT','#FFC400','#1A1A1A'), away:clubTeam('Al Ahli','AHL','#006A4E','#00331F') },
+  { comp:'spl', date:'2026-08-16', time:'22:00', status:'ns', home:clubTeam('Al Shabab','SHB','#FFFFFF','#0A0A0A','#1A1A1A'), away:clubTeam('Al Taawoun','TAW','#FFD400','#0A0A0A','#1A1A1A') },
+  { comp:'spl', date:'2026-08-14', time:'19:00', status:'ns', home:clubTeam('Al Fateh','FTH','#1A9E4B','#0A4D24'), away:clubTeam('Al Ettifaq','ETT','#1A1A1A','#3A3A3A') },
+  { comp:'spl', date:'2026-08-15', time:'19:00', status:'ns', home:clubTeam('Damac','DAM','#1B4F9C','#8B4513'), away:clubTeam('Al Riyadh','RYD','#FFFFFF','#CCCCCC','#1A1A1A') },
+  { comp:'spl', date:'2026-08-16', time:'19:00', status:'ns', home:clubTeam('Al Khaleej','KHL','#1A1A1A','#FFC400'), away:clubTeam('Al Fayha','FAY','#6A0DAD','#3A0763') },
+  { comp:'spl', date:'2026-08-14', time:'17:00', status:'ns', home:clubTeam('Al Okhdood','OKH','#1A6B3C','#0A3D1F'), away:clubTeam('Al Hazem','HZM','#1A1A1A','#3A3A3A') },
+  { comp:'spl', date:'2026-08-15', time:'17:00', status:'ns', home:clubTeam('Neom SC','NEOM','#00BFA6','#0A5C52'), away:clubTeam('Al Qadsiah','QAD','#FFD400','#1A1A1A','#1A1A1A') },
+  // ===== UEFA CHAMPIONS LEAGUE =====
+  { comp:'ucl', date:'2026-05-30', time:'02:00', status:'ft', home:clubTeam('Real Madrid','RMA','#FFFFFF','#CFD8E8','#142C57'), away:clubTeam('Manchester City','MCI','#6CABDD','#1C2C5B'), score:{h:2,a:1} },
+  { comp:'ucl', date:'2026-09-16', time:'02:00', status:'ns', home:clubTeam('Bayern Munich','BAY','#DC052D','#0066B2'), away:clubTeam('PSG','PSG','#004170','#DA291C') },
+  { comp:'ucl', date:'2026-09-17', time:'02:00', status:'ns', home:clubTeam('Arsenal','ARS','#EF0107','#8C0000'), away:clubTeam('Inter Milan','INT','#0068A8','#14213D') },
+  { comp:'ucl', date:'2026-09-16', time:'23:00', status:'ns', home:clubTeam('Barcelona','BAR','#A50044','#004D98'), away:clubTeam('Juventus','JUV','#1A1A1A','#3A3A3A') },
+  { comp:'ucl', date:'2026-09-17', time:'23:00', status:'ns', home:clubTeam('Liverpool','LIV','#C8102E','#00112C'), away:clubTeam('Atletico Madrid','ATM','#CB3524','#272E61') },
+  { comp:'ucl', date:'2026-09-30', time:'23:00', status:'ns', home:clubTeam('Borussia Dortmund','BVB','#FDE100','#FFC400','#1A1A1A'), away:clubTeam('AC Milan','ACM','#FB090B','#1A1A1A') },
+  { comp:'ucl', date:'2026-10-01', time:'23:00', status:'ns', home:clubTeam('Chelsea','CHE','#034694','#0A1F44'), away:clubTeam('RB Leipzig','RBL','#DD0741','#8C0429') },
+  { comp:'ucl', date:'2026-10-01', time:'21:00', status:'ns', home:clubTeam('Napoli','NAP','#12A0D7','#003C71'), away:clubTeam('Benfica','SLB','#E2001A','#9C0010') },
+  // ===== UEFA EUROPA LEAGUE =====
+  { comp:'uel', date:'2026-05-20', time:'23:00', status:'ft', home:clubTeam('Tottenham','TOT','#132257','#1F3A93'), away:clubTeam('AS Roma','ROM','#8E1F2F','#5E1420'), score:{h:1,a:0} },
+  { comp:'uel', date:'2026-09-24', time:'23:45', status:'ns', home:clubTeam('Eintracht Frankfurt','SGE','#E1000F','#1A1A1A'), away:clubTeam('Villarreal','VIL','#FFD93D','#FFB000','#142C57') },
+  { comp:'uel', date:'2026-09-25', time:'23:45', status:'ns', home:clubTeam('Atalanta','ATA','#1D72B8','#14213D'), away:clubTeam('Bayer Leverkusen','B04','#E32221','#7A1110') },
+  { comp:'uel', date:'2026-09-24', time:'21:00', status:'ns', home:clubTeam('Lyon','OL','#1A4D8C','#002D5C'), away:clubTeam('Porto','POR2','#00205B','#C8102E') },
+  { comp:'uel', date:'2026-09-25', time:'21:00', status:'ns', home:clubTeam('Real Sociedad','RSO','#0066B2','#003764'), away:clubTeam('Ajax','AJX','#D2122E','#9C0010') },
+  { comp:'uel', date:'2026-09-24', time:'23:45', status:'ns', home:clubTeam('Fenerbahce','FB','#FFD400','#0A3D91'), away:clubTeam('Lazio','LAZ','#87D8F7','#4FB3E0','#0E1E5B') },
+  { comp:'uel', date:'2026-09-25', time:'21:00', status:'ns', home:clubTeam('Rangers','RAN','#1B3F8B','#0A1F44'), away:clubTeam('Braga','BRA2','#A50034','#9C0010') },
+  { comp:'uel', date:'2026-09-24', time:'19:00', status:'ns', home:clubTeam('PAOK','PAOK','#1A1A1A','#3A3A3A'), away:clubTeam('Slavia Praha','SLA','#A50034','#7A0026') },
+  // ===== UEFA CONFERENCE LEAGUE =====
+  { comp:'uecl', date:'2026-05-27', time:'23:00', status:'ft', home:clubTeam('Chelsea','CHE','#034694','#0A1F44'), away:clubTeam('Fiorentina','FIO','#6E35A3','#3E1D63'), score:{h:3,a:0} },
+  { comp:'uecl', date:'2026-09-24', time:'21:30', status:'ns', home:clubTeam('West Ham','WHU','#7A263A','#1A1A2E'), away:clubTeam('Real Betis','BET','#0BB363','#0A4D2E') },
+  { comp:'uecl', date:'2026-09-24', time:'21:30', status:'ns', home:clubTeam('Molde','MFK','#1A4D8C','#00245D'), away:clubTeam('Rapid Vienna','RAP','#1A6B3C','#0A3D1F') },
+  { comp:'uecl', date:'2026-09-25', time:'21:30', status:'ns', home:clubTeam('Shakhtar Donetsk','SHK','#FF6900','#0A1F44'), away:clubTeam('Vitoria Guimaraes','VIT','#FFFFFF','#CCCCCC','#1A1A1A') },
+  { comp:'uecl', date:'2026-09-24', time:'19:00', status:'ns', home:clubTeam('Legia Warszawa','LEG','#00833E','#0A4D24'), away:clubTeam('Astana','AST','#FFD400','#1A4D8C') },
+  { comp:'uecl', date:'2026-09-25', time:'19:00', status:'ns', home:clubTeam('Larne','LAR','#1B4F9C','#0A2A5C'), away:clubTeam('Hacken','HAC2','#1A6B3C','#0A3D1F') },
+  { comp:'uecl', date:'2026-09-24', time:'21:30', status:'ns', home:clubTeam('Cercle Brugge','CER','#00A14B','#0A4D24'), away:clubTeam('Jagiellonia','JAG','#FFD400','#9C0010') },
+  { comp:'uecl', date:'2026-09-25', time:'19:00', status:'ns', home:clubTeam('Lugano','LUG','#1A1A1A','#E2001A'), away:clubTeam('Slavia Praha','SLA2','#A50034','#7A0026') },
+  // ===== AFC ASIAN CUP 2027 (chưa khởi tranh) =====
+  { comp:'afc2027', date:'2027-01-08', time:'18:30', status:'ns', home:flagTeam('Việt Nam','vn'), away:flagTeam('Iraq','iq') },
+  { comp:'afc2027', date:'2027-01-09', time:'21:00', status:'ns', home:flagTeam('Nhật Bản','jp'), away:flagTeam('Hàn Quốc','kr') },
+  { comp:'afc2027', date:'2027-01-09', time:'23:30', status:'ns', home:flagTeam('Ả Rập Saudi','sa'), away:flagTeam('Úc','au') },
+  { comp:'afc2027', date:'2027-01-10', time:'21:00', status:'ns', home:flagTeam('Iran','ir'), away:flagTeam('UAE','ae') },
+  { comp:'afc2027', date:'2027-01-10', time:'18:30', status:'ns', home:flagTeam('Qatar','qa'), away:flagTeam('Uzbekistan','uz') },
+  { comp:'afc2027', date:'2027-01-11', time:'21:00', status:'ns', home:flagTeam('Trung Quốc','cn'), away:flagTeam('Jordan','jo') },
+  { comp:'afc2027', date:'2027-01-11', time:'18:30', status:'ns', home:flagTeam('Thái Lan','th'), away:flagTeam('Oman','om') },
+  { comp:'afc2027', date:'2027-01-12', time:'18:30', status:'ns', home:flagTeam('Indonesia','id'), away:flagTeam('Bahrain','bh') },
+];
+
+const WEEKDAYS_VI = ['Chủ Nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+const WEEKDAYS_SHORT = ['CN','T2','T3','T4','T5','T6','T7'];
+
+const TYPE_PHRASES = [
+  'Tại đây có lịch mà tôi đã gửi — cập nhật đầy đủ 12 giải đấu',
+  'World Cup 2026 · Premier League · LaLiga · Bundesliga',
+  'Serie A · Ligue 1 · MLS · ROSHN Saudi League',
+  'UEFA Champions League · Europa League · Conference League',
+  'AFC Asian Cup 2027 — Việt Nam cùng các đội tuyển châu Á',
+  'Trận đấu LIVE hiển thị Hiệp + Phút theo thời gian thực'
+];
+
+function fmtDate(dStr){
+  const [y,m,d] = dStr.split('-').map(Number);
+  return `${String(d).padStart(2,'0')}/${String(m).padStart(2,'0')}/${y}`;
+}
+
+function teamBadgeHtml(team){
+  if(team.type === 'flag'){
+    const fallback = team.name.slice(0,3).toUpperCase();
+    return `<img class="team-badge" loading="lazy"
+      src="https://flagcdn.com/h80/${team.iso}.png"
+      srcset="https://flagcdn.com/h160/${team.iso}.png 2x"
+      alt="Cờ ${team.name}"
+      onerror="this.outerHTML='<div class=&quot;team-badge club&quot; style=&quot;background:linear-gradient(135deg,#1E4FD6,#102447)&quot;>${fallback}</div>'">`;
+  }
+  const grad = `linear-gradient(135deg, ${team.c1}, ${team.c2})`;
+  return `<div class="team-badge club" style="background:${grad}; color:${team.fg}">${team.abbr}</div>`;
+}
+
+function matchCardHtml(m){
+  const comp = COMPETITIONS.find(c => c.id === m.comp);
+
+  const statusTag = m.status === 'live'
+    ? `<span class="status-tag live"><span class="live-blip" aria-hidden="true"></span>LIVE</span>`
+    : m.status === 'ft'
+      ? `<span class="status-tag ft">🏁 KT</span>`
+      : `<span class="status-tag upcoming">📅 SẮP ĐÁ</span>`;
+
+  const highlightRow = m.status === 'live'
+    ? `<div class="highlight-pill live"><span class="ico">🕐</span>Hiệp ${m.live ? m.live.half : '-'} • ${m.live ? m.live.minute : '-'}'</div>`
+    : m.status === 'ft'
+      ? `<div class="highlight-pill ft"><span class="ico">🏁</span>Trận đấu đã kết thúc</div>`
+      : `<div class="highlight-pill upcoming"><span class="ico">⏳</span>${fmtDate(m.date)} | ${m.time}</div>`;
+
+  const scoreRow = (m.status === 'live' || m.status === 'ft') && m.score
+    ? `<div class="score-pill"><span class="score-num">${m.score.h}</span><span class="score-dash">-</span><span class="score-num">${m.score.a}</span></div>`
+    : `<div class="score-pill placeholder"><span class="ball">⚽</span><span class="vs-text">vs</span><span class="ball">⚽</span></div>`;
+
+  return `
+  <article class="match-card status-${m.status}" data-comp="${m.comp}">
+    <div class="card-top">
+      <div class="card-comp"><img src="${comp.badge}" alt=""><span>${comp.short}</span></div>
+      ${statusTag}
+    </div>
+    <div class="card-teams">
+      <div class="team-block">${teamBadgeHtml(m.home)}<span class="team-name">${m.home.name}</span></div>
+      <span class="vs-label">vs</span>
+      <div class="team-block">${teamBadgeHtml(m.away)}<span class="team-name">${m.away.name}</span></div>
+    </div>
+    <div class="card-date">
+      <span><span class="ico">📅</span>${fmtDate(m.date)}</span>
+      <span><span class="ico">🕐</span>${m.time}</span>
+    </div>
+    ${highlightRow}
+    ${scoreRow}
+    <button class="detail-link" type="button" onclick="showToast('Chi tiết trận đấu đang được cập nhật...')">
+      <span class="ico">📋</span>Xem lịch chi tiết<span class="arrow">↗</span>
+    </button>
+  </article>`;
+}
+
+const STATUS_ORDER = { live:0, ns:1, ft:2 };
+
+function renderSchedule(){
+  const sorted = [];
+  COMPETITIONS.forEach(comp => {
+    const ms = MATCHES.filter(m => m.comp === comp.id).slice().sort((a,b) => {
+      const so = STATUS_ORDER[a.status] - STATUS_ORDER[b.status];
+      if(so !== 0) return so;
+      return (a.date+a.time).localeCompare(b.date+b.time);
+    });
+    sorted.push(...ms);
+  });
+  document.getElementById('matchGrid').innerHTML = sorted.map(m => {
+    try { return matchCardHtml(m); }
+    catch(err){ console.error('Lỗi render trận đấu, đã bỏ qua:', m, err); return ''; }
+  }).join('');
+}
+
+function renderTicker(){
+  const items = COMPETITIONS.map(c =>
+    `<div class="ticker-item"><img src="${c.badge}" alt=""><b>${c.short}</b></div><span class="ticker-sep">●</span>`
+  ).join('');
+  document.getElementById('tickerTrack').innerHTML = items + items;
+}
+
+function renderFilters(){
+  const track = document.getElementById('filtersTrack');
+  const all = `<button class="filter-pill active" data-filter="all">🏆 Tất cả giải</button>`;
+  const pills = COMPETITIONS.map(c =>
+    `<button class="filter-pill" data-filter="${c.id}"><img src="${c.badge}" alt="">${c.short}</button>`
+  ).join('');
+  track.innerHTML = all + pills;
+
+  track.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-pill');
+    if(!btn) return;
+    track.querySelectorAll('.filter-pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('#matchGrid .match-card').forEach(card => {
+      card.style.display = (filter === 'all' || card.dataset.comp === filter) ? '' : 'none';
+    });
+  });
+}
+
+function tickClock(){
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2,'0');
+  const mm = String(now.getMinutes()).padStart(2,'0');
+  const ss = String(now.getSeconds()).padStart(2,'0');
+  document.getElementById('clockTime').textContent = `${hh}:${mm}:${ss}`;
+  const dd = String(now.getDate()).padStart(2,'0');
+  const mo = String(now.getMonth()+1).padStart(2,'0');
+  document.getElementById('clockDate').textContent = `${WEEKDAYS_SHORT[now.getDay()]}, ${dd}/${mo}/${now.getFullYear()}`;
+}
+
+function startTypewriter(el, phrases){
+  let pi = 0, ci = 0, deleting = false;
+  function step(){
+    const phrase = phrases[pi];
+    if(!deleting){
+      ci++; el.textContent = phrase.slice(0, ci);
+      if(ci === phrase.length){ deleting = true; return setTimeout(step, 1900); }
+      return setTimeout(step, 45);
+    } else {
+      ci--; el.textContent = phrase.slice(0, ci);
+      if(ci === 0){ deleting = false; pi = (pi+1) % phrases.length; return setTimeout(step, 400); }
+      return setTimeout(step, 22);
+    }
+  }
+  step();
+}
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._hideTimer);
+  t._hideTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+function startLiveTicker(){
+  setInterval(() => {
+    let changed = false;
+    MATCHES.forEach(m => {
+      if(m.status !== 'live') return;
+      if(m.live.minute < 45){ m.live.minute++; changed = true; }
+      else if(m.live.minute === 45 && m.live.half === 1){ m.live.half = 2; m.live.minute = 46; changed = true; }
+      else if(m.live.minute < 90){ m.live.minute++; changed = true; }
+    });
+    if(changed) renderSchedule();
+  }, 60000);
+}
+
+function init(){
+  renderTicker();
+  renderFilters();
+  renderSchedule();
+  tickClock();
+  setInterval(tickClock, 1000);
+  startTypewriter(document.getElementById('typewriter'), TYPE_PHRASES);
+  startLiveTicker();
+
+  document.getElementById('btnCalendar').addEventListener('click', () => {
+    document.getElementById('schedule').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  document.getElementById('btnRefresh').addEventListener('click', (e) => {
+    e.currentTarget.classList.add('spinning');
+    setTimeout(() => e.currentTarget.classList.remove('spinning'), 600);
+    renderSchedule();
+    showToast('Đã làm mới lịch thi đấu');
+  });
+}
+document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
-  </html>
+</html>
